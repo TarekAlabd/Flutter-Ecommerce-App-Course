@@ -1,4 +1,7 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
+import 'package:flutter_ecommerce_app/models/home_carosel_item_model.dart';
 import 'package:flutter_ecommerce_app/models/product_item_model.dart';
 import 'package:flutter_ecommerce_app/views/widgets/product_item.dart';
 
@@ -21,7 +24,7 @@ class HomePage extends StatelessWidget {
                       children: [
                         const CircleAvatar(
                           radius: 25,
-                          backgroundImage: NetworkImage(
+                          backgroundImage: CachedNetworkImageProvider(
                               'https://pbs.twimg.com/profile_images/1493704582505144323/Stvh3FSK_400x400.jpg'),
                         ),
                         const SizedBox(width: 16.0),
@@ -58,6 +61,31 @@ class HomePage extends StatelessWidget {
                       ],
                     ),
                   ],
+                ),
+                const SizedBox(height: 24.0),
+                FlutterCarousel.builder(
+                  itemCount: dummyHomeCarouselItems.length,
+                  itemBuilder: (BuildContext context, int itemIndex,
+                          int pageViewIndex) =>
+                      Padding(
+                    padding: const EdgeInsetsDirectional.only(end: 16.0),
+                    child: CachedNetworkImage(
+                      imageUrl: dummyHomeCarouselItems[itemIndex].imgUrl,
+                      fit: BoxFit.fill,
+                      placeholder: (context, url) => const Center(
+                        child: CircularProgressIndicator.adaptive(),
+                      ),
+                      errorWidget: (context, url, error) => const Icon(
+                        Icons.error,
+                        color: Colors.red,),
+                    ),
+                  ),
+                  options: CarouselOptions(
+                    height: 200,
+                    showIndicator: true,
+                    autoPlay: true,
+                    slideIndicator: CircularWaveSlideIndicator(),
+                  ),
                 ),
                 const SizedBox(height: 24.0),
                 Row(
