@@ -8,7 +8,9 @@ class CounterWidget extends StatelessWidget {
 
   const CounterWidget({
     super.key,
-    required this.value, required this.productId, required this.cubit,
+    required this.value,
+    required this.productId,
+    required this.cubit,
   });
 
   @override
@@ -17,7 +19,7 @@ class CounterWidget extends StatelessWidget {
       decoration: BoxDecoration(
         color: AppColors.grey2,
         borderRadius: const BorderRadius.all(
-          Radius.circular(12),
+          Radius.circular(30),
         ),
       ),
       child: Padding(
