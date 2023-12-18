@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_ecommerce_app/utils/app_colors.dart';
 import 'package:flutter_ecommerce_app/view_models/product_details_cubit/product_details_cubit.dart';
+import 'package:flutter_ecommerce_app/views/widgets/counter_widget.dart';
 
 class ProductDetailsPage extends StatelessWidget {
   final String productId;
@@ -13,6 +14,7 @@ class ProductDetailsPage extends StatelessWidget {
     final size = MediaQuery.of(context).size;
     return BlocBuilder<ProductDetailsCubit, ProductDetailsState>(
       bloc: BlocProvider.of<ProductDetailsCubit>(context),
+      buildWhen: (previous, current) => current is! QuantityCounterLoaded,
       builder: (context, state) {
         if (state is ProductDetailsLoading) {
           return const Scaffold(
@@ -106,7 +108,31 @@ class ProductDetailsPage extends StatelessWidget {
                                   ),
                                 ],
                               ),
-                              CounterWidget(),
+                              BlocBuilder<ProductDetailsCubit, ProductDetailsState>(
+                                bloc: BlocProvider.of<ProductDetailsCubit>(
+                                    context),
+                                    buildWhen: (previous, current) => current is QuantityCounterLoaded || current is ProductDetailsLoaded,
+                                builder: (context, state) {
+                                  if (state is QuantityCounterLoaded) {
+                                    return CounterWidget(
+                                    value: state.value,
+                                    productId: product.id,
+                                    cubit: BlocProvider.of<ProductDetailsCubit>(
+                                    context),
+                                  );
+                                  } else if (state is ProductDetailsLoaded) {
+                                    return CounterWidget(
+                                    value: state.product.quantity,
+                                    productId: product.id,
+                                    cubit: BlocProvider.of<ProductDetailsCubit>(
+                                    context),
+                                  );
+                                  } else {
+                                    return const SizedBox.shrink();
+                                  }
+                                  
+                                },
+                              ),
                             ],
                           ),
                         ],
