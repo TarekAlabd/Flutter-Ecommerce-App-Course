@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_ecommerce_app/models/product_item_model.dart';
 import 'package:flutter_ecommerce_app/utils/app_colors.dart';
 import 'package:flutter_ecommerce_app/view_models/product_details_cubit/product_details_cubit.dart';
 import 'package:flutter_ecommerce_app/views/widgets/counter_widget.dart';
@@ -77,6 +78,7 @@ class ProductDetailsPage extends StatelessWidget {
                         36.0,
                       ),
                       child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -86,8 +88,12 @@ class ProductDetailsPage extends StatelessWidget {
                                 children: [
                                   Text(
                                     product.name,
-                                    style:
-                                        Theme.of(context).textTheme.titleLarge,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .titleLarge!
+                                        .copyWith(
+                                          fontWeight: FontWeight.bold,
+                                        ),
                                   ),
                                   const SizedBox(height: 6),
                                   Row(
@@ -108,30 +114,125 @@ class ProductDetailsPage extends StatelessWidget {
                                   ),
                                 ],
                               ),
-                              BlocBuilder<ProductDetailsCubit, ProductDetailsState>(
+                              BlocBuilder<ProductDetailsCubit,
+                                  ProductDetailsState>(
                                 bloc: BlocProvider.of<ProductDetailsCubit>(
                                     context),
-                                    buildWhen: (previous, current) => current is QuantityCounterLoaded || current is ProductDetailsLoaded,
+                                buildWhen: (previous, current) =>
+                                    current is QuantityCounterLoaded ||
+                                    current is ProductDetailsLoaded,
                                 builder: (context, state) {
                                   if (state is QuantityCounterLoaded) {
                                     return CounterWidget(
-                                    value: state.value,
-                                    productId: product.id,
-                                    cubit: BlocProvider.of<ProductDetailsCubit>(
-                                    context),
-                                  );
+                                      value: state.value,
+                                      productId: product.id,
+                                      cubit:
+                                          BlocProvider.of<ProductDetailsCubit>(
+                                              context),
+                                    );
                                   } else if (state is ProductDetailsLoaded) {
                                     return CounterWidget(
-                                    value: state.product.quantity,
-                                    productId: product.id,
-                                    cubit: BlocProvider.of<ProductDetailsCubit>(
-                                    context),
-                                  );
+                                      value: state.product.quantity,
+                                      productId: product.id,
+                                      cubit:
+                                          BlocProvider.of<ProductDetailsCubit>(
+                                              context),
+                                    );
                                   } else {
                                     return const SizedBox.shrink();
                                   }
-                                  
                                 },
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 16),
+                          Text(
+                            'Size',
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleMedium!
+                                .copyWith(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                          ),
+                          Row(
+                            children: ProductSize.values
+                                .map(
+                                  (size) => Padding(
+                                    padding: const EdgeInsets.only(
+                                        top: 6.0, right: 8.0),
+                                    child: InkWell(
+                                      onTap: () {},
+                                      child: DecoratedBox(
+                                        decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          color: AppColors.grey2,
+                                        ),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(12.0),
+                                          child: Text(size.name),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                )
+                                .toList(),
+                          ),
+                          const SizedBox(height: 16),
+                          Text(
+                            'Description',
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleMedium!
+                                .copyWith(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                          ),
+                          const SizedBox(height: 8.0),
+                          Text(
+                            product.description,
+                            style: Theme.of(context)
+                                .textTheme
+                                .labelMedium!
+                                .copyWith(
+                                  color: AppColors.black45,
+                                ),
+                          ),
+                          const Spacer(),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text.rich(
+                                TextSpan(
+                                  text: '\$',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .titleLarge!
+                                      .copyWith(
+                                        fontWeight: FontWeight.bold,
+                                        color: Theme.of(context).primaryColor,
+                                      ),
+                                  children: [
+                                    TextSpan(
+                                      text: product.price.toString(),
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .titleLarge!
+                                          .copyWith(
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              ElevatedButton.icon(
+                                onPressed: () {},
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: AppColors.primary,
+                                  foregroundColor: AppColors.white,
+                                ),
+                                label: const Text('Add to Cart'),
+                                icon: const Icon(Icons.shopping_bag_outlined),
                               ),
                             ],
                           ),
