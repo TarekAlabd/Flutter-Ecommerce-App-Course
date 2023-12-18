@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_ecommerce_app/utils/app_colors.dart';
 import 'package:flutter_ecommerce_app/view_models/product_details_cubit/product_details_cubit.dart';
 
 class ProductDetailsPage extends StatelessWidget {
@@ -9,6 +10,7 @@ class ProductDetailsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return BlocBuilder<ProductDetailsCubit, ProductDetailsState>(
       bloc: BlocProvider.of<ProductDetailsCubit>(context),
       builder: (context, state) {
@@ -27,19 +29,91 @@ class ProductDetailsPage extends StatelessWidget {
         } else if (state is ProductDetailsLoaded) {
           final product = state.product;
           return Scaffold(
+            extendBodyBehindAppBar: true,
             appBar: AppBar(
+              backgroundColor: Colors.transparent,
+              elevation: 0,
               title: const Text('Product Details'),
               actions: [
                 IconButton(
                   icon: const Icon(Icons.favorite_border),
-                  onPressed: () {
-                  },
+                  onPressed: () {},
                 ),
               ],
             ),
             body: Stack(
               children: [
-                CachedNetworkImage(imageUrl: product.imgUrl)
+                Container(
+                  height: size.height * 0.52,
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    color: AppColors.grey2,
+                  ),
+                  child: Column(
+                    children: [
+                      SizedBox(height: size.height * 0.1),
+                      CachedNetworkImage(
+                        imageUrl: product.imgUrl,
+                        height: size.height * 0.4,
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(top: size.height * 0.47),
+                  child: Container(
+                    width: double.infinity,
+                    decoration: const BoxDecoration(
+                      color: AppColors.white,
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(50),
+                        topRight: Radius.circular(50),
+                      ),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(
+                        36.0,
+                      ),
+                      child: Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    product.name,
+                                    style:
+                                        Theme.of(context).textTheme.titleLarge,
+                                  ),
+                                  const SizedBox(height: 6),
+                                  Row(
+                                    children: [
+                                      const Icon(
+                                        Icons.star,
+                                        color: AppColors.yellow,
+                                        size: 25,
+                                      ),
+                                      const SizedBox(width: 5),
+                                      Text(
+                                        product.averageRate.toString(),
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .titleMedium,
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                              CounterWidget(),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
               ],
             ),
           );
