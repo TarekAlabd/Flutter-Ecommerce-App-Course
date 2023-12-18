@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ecommerce_app/models/product_item_model.dart';
+import 'package:flutter_ecommerce_app/utils/app_colors.dart';
 
 class ProductItem extends StatelessWidget {
   final ProductItemModel productItem;
@@ -17,7 +18,7 @@ class ProductItem extends StatelessWidget {
               width: 200,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(16.0),
-                color: Colors.grey.shade200,
+                color: AppColors.grey2,
               ),
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
