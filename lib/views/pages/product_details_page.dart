@@ -13,8 +13,10 @@ class ProductDetailsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    final cubit = BlocProvider.of<ProductDetailsCubit>(context);
+
     return BlocBuilder<ProductDetailsCubit, ProductDetailsState>(
-      bloc: BlocProvider.of<ProductDetailsCubit>(context),
+      bloc: cubit,
       buildWhen: (previous, current) =>
           current is ProductDetailsLoading || current is ProductDetailsLoaded || current is ProductDetailsError,
       builder: (context, state) {
@@ -117,8 +119,7 @@ class ProductDetailsPage extends StatelessWidget {
                               ),
                               BlocBuilder<ProductDetailsCubit,
                                   ProductDetailsState>(
-                                bloc: BlocProvider.of<ProductDetailsCubit>(
-                                    context),
+                                bloc: cubit,
                                 buildWhen: (previous, current) =>
                                     current is QuantityCounterLoaded ||
                                     current is ProductDetailsLoaded,
@@ -133,7 +134,7 @@ class ProductDetailsPage extends StatelessWidget {
                                     );
                                   } else if (state is ProductDetailsLoaded) {
                                     return CounterWidget(
-                                      value: state.product.quantity,
+                                      value: 1,
                                       productId: product.id,
                                       cubit:
                                           BlocProvider.of<ProductDetailsCubit>(
@@ -157,7 +158,7 @@ class ProductDetailsPage extends StatelessWidget {
                                 ),
                           ),
                           BlocBuilder<ProductDetailsCubit, ProductDetailsState>(
-                            bloc: BlocProvider.of<ProductDetailsCubit>(context),
+                            bloc: cubit,
                             buildWhen: (previous, current) =>
                                 current is SizeSelected ||
                                 current is ProductDetailsLoaded,
@@ -169,9 +170,11 @@ class ProductDetailsPage extends StatelessWidget {
                                         padding: const EdgeInsets.only(
                                             top: 6.0, right: 8.0),
                                         child: InkWell(
-                                          onTap: () => BlocProvider.of<
+                                          onTap: () {
+                                            BlocProvider.of<
                                                   ProductDetailsCubit>(context)
-                                              .selectSize(size),
+                                              .selectSize(size);
+                                          },
                                           child: DecoratedBox(
                                             decoration: BoxDecoration(
                                               shape: BoxShape.circle,
@@ -255,8 +258,7 @@ class ProductDetailsPage extends StatelessWidget {
                                 ),
                               ),
                               BlocBuilder<ProductDetailsCubit, ProductDetailsState>(
-                                bloc: BlocProvider.of<ProductDetailsCubit>(
-                                    context),
+                                bloc: cubit,
                                     buildWhen: (previous, current) => current is ProductAddedToCart || current is ProductAddingToCart,
                                 builder: (context, state) {
                                   if (state is ProductAddingToCart) {
@@ -279,10 +281,21 @@ class ProductDetailsPage extends StatelessWidget {
                                   );
                                   }
                                   return ElevatedButton.icon(
-                                    onPressed: () =>
-                                        BlocProvider.of<ProductDetailsCubit>(
-                                                context)
-                                            .addToCart(product.id),
+                                    onPressed: () {
+                                      if (cubit.selectedSize != null) {
+                                        cubit
+                                            .addToCart(product.id);
+                                      } else {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          const SnackBar(
+                                            content: Text(
+                                              'Please select size',
+                                            ),
+                                          ),
+                                        );
+                                      }
+                                    },
                                     style: ElevatedButton.styleFrom(
                                       backgroundColor: AppColors.primary,
                                       foregroundColor: AppColors.white,
