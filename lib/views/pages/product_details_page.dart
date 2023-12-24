@@ -15,7 +15,8 @@ class ProductDetailsPage extends StatelessWidget {
     final size = MediaQuery.of(context).size;
     return BlocBuilder<ProductDetailsCubit, ProductDetailsState>(
       bloc: BlocProvider.of<ProductDetailsCubit>(context),
-      buildWhen: (previous, current) => current is! QuantityCounterLoaded,
+      buildWhen: (previous, current) =>
+          current is ProductDetailsLoading || current is ProductDetailsLoaded || current is ProductDetailsError,
       builder: (context, state) {
         if (state is ProductDetailsLoading) {
           return const Scaffold(
@@ -155,28 +156,56 @@ class ProductDetailsPage extends StatelessWidget {
                                   fontWeight: FontWeight.bold,
                                 ),
                           ),
-                          Row(
-                            children: ProductSize.values
-                                .map(
-                                  (size) => Padding(
-                                    padding: const EdgeInsets.only(
-                                        top: 6.0, right: 8.0),
-                                    child: InkWell(
-                                      onTap: () {},
-                                      child: DecoratedBox(
-                                        decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          color: AppColors.grey2,
-                                        ),
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(12.0),
-                                          child: Text(size.name),
+                          BlocBuilder<ProductDetailsCubit, ProductDetailsState>(
+                            bloc: BlocProvider.of<ProductDetailsCubit>(context),
+                            buildWhen: (previous, current) =>
+                                current is SizeSelected ||
+                                current is ProductDetailsLoaded,
+                            builder: (context, state) {
+                              return Row(
+                                children: ProductSize.values
+                                    .map(
+                                      (size) => Padding(
+                                        padding: const EdgeInsets.only(
+                                            top: 6.0, right: 8.0),
+                                        child: InkWell(
+                                          onTap: () => BlocProvider.of<
+                                                  ProductDetailsCubit>(context)
+                                              .selectSize(size),
+                                          child: DecoratedBox(
+                                            decoration: BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              color: state is SizeSelected &&
+                                                      state.size == size
+                                                  ? Theme.of(context)
+                                                      .primaryColor
+                                                  : AppColors.grey2,
+                                            ),
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.all(12.0),
+                                              child: Text(
+                                                size.name,
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .labelMedium!
+                                                    .copyWith(
+                                                      color:
+                                                          state is SizeSelected &&
+                                                                  state.size ==
+                                                                      size
+                                                              ? AppColors.white
+                                                              : AppColors.black,
+                                                    ),
+                                              ),
+                                            ),
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                  ),
-                                )
-                                .toList(),
+                                    )
+                                    .toList(),
+                              );
+                            },
                           ),
                           const SizedBox(height: 16),
                           Text(
@@ -225,14 +254,44 @@ class ProductDetailsPage extends StatelessWidget {
                                   ],
                                 ),
                               ),
-                              ElevatedButton.icon(
-                                onPressed: () {},
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: AppColors.primary,
-                                  foregroundColor: AppColors.white,
-                                ),
-                                label: const Text('Add to Cart'),
-                                icon: const Icon(Icons.shopping_bag_outlined),
+                              BlocBuilder<ProductDetailsCubit, ProductDetailsState>(
+                                bloc: BlocProvider.of<ProductDetailsCubit>(
+                                    context),
+                                    buildWhen: (previous, current) => current is ProductAddedToCart || current is ProductAddingToCart,
+                                builder: (context, state) {
+                                  if (state is ProductAddingToCart) {
+                                    return ElevatedButton(
+                                    onPressed: null,
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: AppColors.primary,
+                                      foregroundColor: AppColors.white,
+                                    ),
+                                    child: const CircularProgressIndicator.adaptive(),
+                                  );
+                                  } else if (state is ProductAddedToCart) {
+                                    return ElevatedButton(
+                                    onPressed: null,
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: AppColors.primary,
+                                      foregroundColor: AppColors.white,
+                                    ),
+                                    child: const Text('Added To Cart'),
+                                  );
+                                  }
+                                  return ElevatedButton.icon(
+                                    onPressed: () =>
+                                        BlocProvider.of<ProductDetailsCubit>(
+                                                context)
+                                            .addToCart(product.id),
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: AppColors.primary,
+                                      foregroundColor: AppColors.white,
+                                    ),
+                                    label: const Text('Add to Cart'),
+                                    icon:
+                                        const Icon(Icons.shopping_bag_outlined),
+                                  );
+                                },
                               ),
                             ],
                           ),
