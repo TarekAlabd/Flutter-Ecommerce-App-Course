@@ -11,58 +11,69 @@ class CartPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     debugPrint(dummyCart.toString());
-    return BlocBuilder<CartCubit, CartState>(
-        bloc: BlocProvider.of<CartCubit>(context),
-        buildWhen: (previous, current) =>
-            current is CartLoaded ||
-            current is CartLoading ||
-            current is CartError ||
-            current is CartError,
-        builder: (context, state) {
-          if (state is CartLoading) {
-            return const Center(
-              child: CircularProgressIndicator.adaptive(),
-            );
-          } else if (state is CartLoaded) {
-            final cartItems = state.cartItems;
-            if (cartItems.isEmpty) {
-              return const Center(
-                child: Text('No items in your cart!'),
-              );
-            }
-            return SingleChildScrollView(
-              child: Column(
-                children: [
-                  ListView.separated(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: cartItems.length,
-                    itemBuilder: (context, index) {
-                      final cartItem = cartItems[index];
-                      return CartItemWidget(cartItem: cartItem);
-                    },
-                    separatorBuilder: (context, index) {
-                      return Divider(
-                        color: AppColors.grey2,
-                      );
-                    },
-                  ),
-                  Divider(
-                    color: AppColors.grey2,
-                  )
-                ],
-              ),
-            );
-          } else if (state is CartError) {
-            return Center(
-              child: Text(state.message),
-            );
-          } else {
-            return const Center(
-              child: Text('Something went wrong!'),
-            );
-          }
+    return BlocProvider(
+      create: (context) {
+          final cubit = CartCubit();
+          cubit.getCartItems();
+          return cubit;
         },
+      child: Builder(
+        builder: (context) {
+          return BlocBuilder<CartCubit, CartState>(
+            bloc: BlocProvider.of<CartCubit>(context),
+            buildWhen: (previous, current) =>
+                current is CartLoaded ||
+                current is CartLoading ||
+                current is CartError ||
+                current is CartError,
+            builder: (context, state) {
+              if (state is CartLoading) {
+                return const Center(
+                  child: CircularProgressIndicator.adaptive(),
+                );
+              } else if (state is CartLoaded) {
+                final cartItems = state.cartItems;
+                if (cartItems.isEmpty) {
+                  return const Center(
+                    child: Text('No items in your cart!'),
+                  );
+                }
+                return SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      ListView.separated(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: cartItems.length,
+                        itemBuilder: (context, index) {
+                          final cartItem = cartItems[index];
+                          return CartItemWidget(cartItem: cartItem);
+                        },
+                        separatorBuilder: (context, index) {
+                          return Divider(
+                            color: AppColors.grey2,
+                          );
+                        },
+                      ),
+                      Divider(
+                        color: AppColors.grey2,
+                      )
+                    ],
+                  ),
+                );
+              } else if (state is CartError) {
+                return Center(
+                  child: Text(state.message),
+                );
+              } else {
+                return const Center(
+                  child: Text('Something went wrong!'),
+                );
+              }
+            },
+          );
+        }
+      ),
     );
   }
 }
