@@ -9,7 +9,9 @@ class CartCubit extends Cubit<CartState> {
 
   void getCartItems() async {
     emit(CartLoading());
-    emit(CartLoaded(dummyCart));
+    final subtotal = dummyCart.fold<double>(
+        0, (previousValue, item) => previousValue + item.product.price);
+    emit(CartLoaded(dummyCart, subtotal));
   }
 
   void incrementCounter(String productId, [int? initialValue]) {

@@ -10,8 +10,9 @@ final class CartLoading extends CartState {}
 
 final class CartLoaded extends CartState {
   final List<AddToCartModel> cartItems;
+  final double subtotal;
 
-  const CartLoaded(this.cartItems);
+  const CartLoaded(this.cartItems, this.subtotal);
 }
 
 final class CartError extends CartState {
