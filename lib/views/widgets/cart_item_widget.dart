@@ -53,38 +53,54 @@ class CartItemWidget extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 12.0),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    BlocBuilder<CartCubit, CartState>(
-                      bloc: cubit,
-                      buildWhen: (previous, current) =>
-                          current is QuantityCounterLoaded &&
-                          current.productId == cartItem.product.id,
-                      builder: (context, state) {
-                        if (state is QuantityCounterLoaded) {
-                          return CounterWidget(
+                BlocBuilder<CartCubit, CartState>(
+                  bloc: cubit,
+                  buildWhen: (previous, current) =>
+                      current is QuantityCounterLoaded &&
+                      current.productId == cartItem.product.id,
+                  builder: (context, state) {
+                    if (state is QuantityCounterLoaded) {
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          CounterWidget(
                             value: state.value,
                             productId: cartItem.product.id,
                             cubit: cubit,
-                          );
-                        }
-                        return CounterWidget(
+                          ),
+                          Text(
+                            '\$${(state.value * cartItem.product.price).toStringAsFixed(1)}',
+                            style: Theme.of(context)
+                                .textTheme
+                                .headlineSmall!
+                                .copyWith(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                          ),
+                        ],
+                      );
+                    }
+                    return Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        CounterWidget(
                           value: cartItem.quantity,
                           productId: cartItem.product.id,
                           cubit: cubit,
                           initialValue: cartItem.quantity,
-                        );
-                      },
-                    ),
-                    Text(
-                      '\$${cartItem.totalPrice.toStringAsFixed(1)}',
-                      style:
-                          Theme.of(context).textTheme.headlineSmall!.copyWith(
+                        ),
+                        Text(
+                          '\$${cartItem.totalPrice.toStringAsFixed(1)}',
+                          style: Theme.of(context)
+                              .textTheme
+                              .headlineSmall!
+                              .copyWith(
                                 fontWeight: FontWeight.bold,
                               ),
-                    ),
-                  ],
+                        ),
+                      ],
+                    );
+                  },
                 ),
               ],
             ),
