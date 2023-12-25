@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dash/flutter_dash.dart';
 import 'package:flutter_ecommerce_app/models/add_to_cart_model.dart';
 import 'package:flutter_ecommerce_app/utils/app_colors.dart';
+import 'package:flutter_ecommerce_app/utils/app_routes.dart';
 import 'package:flutter_ecommerce_app/view_models/cart_cubit/cart_cubit.dart';
 import 'package:flutter_ecommerce_app/views/widgets/cart_item_widget.dart';
 
@@ -61,14 +62,16 @@ class CartPage extends StatelessWidget {
                       color: AppColors.grey2,
                     ),
                     BlocBuilder<CartCubit, CartState>(
-                        bloc: cubit,
-                        buildWhen: (previous, current) => current is SubtotalUpdated,
-                        builder: (context, subtotalState) {
-                          if (subtotalState is SubtotalUpdated) {
-                            return Column(
+                      bloc: cubit,
+                      buildWhen: (previous, current) =>
+                          current is SubtotalUpdated,
+                      builder: (context, subtotalState) {
+                        if (subtotalState is SubtotalUpdated) {
+                          return Column(
                             children: [
                               totalAndSubtotalWidget(context,
-                                  title: 'Subtotal', amount: subtotalState.subtotal),
+                                  title: 'Subtotal',
+                                  amount: subtotalState.subtotal),
                               totalAndSubtotalWidget(context,
                                   title: 'Shipping', amount: 10),
                               const SizedBox(height: 4.0),
@@ -84,27 +87,28 @@ class CartPage extends StatelessWidget {
                               ),
                             ],
                           );
-                          }
-                          return Column(
-                            children: [
-                              totalAndSubtotalWidget(context,
-                                  title: 'Subtotal', amount: state.subtotal),
-                              totalAndSubtotalWidget(context,
-                                  title: 'Shipping', amount: 10),
-                              const SizedBox(height: 4.0),
-                              Dash(
-                                dashColor: AppColors.grey3,
-                                length: MediaQuery.of(context).size.width - 32,
-                              ),
-                              const SizedBox(height: 4.0),
-                              totalAndSubtotalWidget(
-                                context,
-                                title: 'Total Amount',
-                                amount: state.subtotal + 10,
-                              ),
-                            ],
-                          );
-                        },),
+                        }
+                        return Column(
+                          children: [
+                            totalAndSubtotalWidget(context,
+                                title: 'Subtotal', amount: state.subtotal),
+                            totalAndSubtotalWidget(context,
+                                title: 'Shipping', amount: 10),
+                            const SizedBox(height: 4.0),
+                            Dash(
+                              dashColor: AppColors.grey3,
+                              length: MediaQuery.of(context).size.width - 32,
+                            ),
+                            const SizedBox(height: 4.0),
+                            totalAndSubtotalWidget(
+                              context,
+                              title: 'Total Amount',
+                              amount: state.subtotal + 10,
+                            ),
+                          ],
+                        );
+                      },
+                    ),
                     const SizedBox(height: 40.0),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -112,7 +116,10 @@ class CartPage extends StatelessWidget {
                         width: double.infinity,
                         height: 60,
                         child: ElevatedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.of(context, rootNavigator: true)
+                                .pushNamed(AppRoutes.checkoutRoute);
+                          },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Theme.of(context).primaryColor,
                             foregroundColor: AppColors.white,
