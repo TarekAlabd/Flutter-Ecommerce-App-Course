@@ -59,7 +59,8 @@ class CartItemWidget extends StatelessWidget {
                     BlocBuilder<CartCubit, CartState>(
                       bloc: cubit,
                       buildWhen: (previous, current) =>
-                          current is QuantityCounterLoaded,
+                          current is QuantityCounterLoaded &&
+                          current.productId == cartItem.product.id,
                       builder: (context, state) {
                         if (state is QuantityCounterLoaded) {
                           return CounterWidget(
@@ -72,6 +73,7 @@ class CartItemWidget extends StatelessWidget {
                           value: cartItem.quantity,
                           productId: cartItem.product.id,
                           cubit: cubit,
+                          initialValue: cartItem.quantity,
                         );
                       },
                     ),
