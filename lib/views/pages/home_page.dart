@@ -24,88 +24,81 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) {
-        final cubit = HomeCubit();
-        cubit.getHomeData();
-        return cubit;
-      },
-      child: Scaffold(
-        body: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: [
-                        const CircleAvatar(
-                          radius: 25,
-                          backgroundImage: CachedNetworkImageProvider(
-                              'https://pbs.twimg.com/profile_images/1493704582505144323/Stvh3FSK_400x400.jpg'),
-                        ),
-                        const SizedBox(width: 16.0),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Tarek Alabd',
-                              style: Theme.of(context).textTheme.labelLarge,
-                            ),
-                            Text(
-                              'Let\'s go shopping!',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .labelSmall!
-                                  .copyWith(
-                                    color: Colors.grey,
-                                  ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        IconButton(
-                          onPressed: () {},
-                          icon: const Icon(Icons.search),
-                        ),
-                        IconButton(
-                          onPressed: () {},
-                          icon: const Icon(Icons.notifications),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 24.0),
-                TabBar(
-                  controller: _tabController,
-                  unselectedLabelColor: AppColors.grey,
-                  tabs: const [
-                    Tab(
-                      text: 'Home',
-                    ),
-                    Tab(
-                      text: 'Category',
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 24.0),
-                Expanded(
-                  child: TabBarView(
-                    controller: _tabController,
-                    children: const [
-                      HomeTabView(),
-                      CategoryTabView(),
+    return Scaffold(
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      const CircleAvatar(
+                        radius: 25,
+                        backgroundImage: CachedNetworkImageProvider(
+                            'https://pbs.twimg.com/profile_images/1493704582505144323/Stvh3FSK_400x400.jpg'),
+                      ),
+                      const SizedBox(width: 16.0),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Tarek Alabd',
+                            style: Theme.of(context).textTheme.labelLarge,
+                          ),
+                          Text(
+                            'Let\'s go shopping!',
+                            style: Theme.of(context)
+                                .textTheme
+                                .labelSmall!
+                                .copyWith(
+                                  color: Colors.grey,
+                                ),
+                          ),
+                        ],
+                      ),
                     ],
                   ),
+                  Row(
+                    children: [
+                      IconButton(
+                        onPressed: () {},
+                        icon: const Icon(Icons.search),
+                      ),
+                      IconButton(
+                        onPressed: () {},
+                        icon: const Icon(Icons.notifications),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+              const SizedBox(height: 24.0),
+              TabBar(
+                controller: _tabController,
+                unselectedLabelColor: AppColors.grey,
+                tabs: const [
+                  Tab(
+                    text: 'Home',
+                  ),
+                  Tab(
+                    text: 'Category',
+                  ),
+                ],
+              ),
+              const SizedBox(height: 24.0),
+              Expanded(
+                child: TabBarView(
+                  controller: _tabController,
+                  children: const [
+                    HomeTabView(),
+                    CategoryTabView(),
+                  ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),
