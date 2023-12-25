@@ -29,22 +29,8 @@ class _CustomBottomNavbarState extends State<CustomBottomNavbar> {
 
   List<Widget> _buildScreens(BuildContext context) {
     return [
-      BlocProvider(
-        create: (context) {
-          final cubit = HomeCubit();
-          cubit.getHomeData();
-          return cubit;
-        },
-        child: const HomePage(),
-      ),
-      BlocProvider(
-        create: (context) {
-          final cubit = CartCubit();
-          cubit.getCartItems();
-          return cubit;
-        },
-        child: const CartPage(),
-      ),
+      const HomePage(),
+      const CartPage(),
       const FavoritesPage(),
       const ProfilePage(),
     ];

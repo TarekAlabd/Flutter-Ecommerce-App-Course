@@ -24,34 +24,41 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0),
-        child: Column(
-          children: [
-            TabBar(
-              controller: _tabController,
-              unselectedLabelColor: AppColors.grey,
-              tabs: const [
-                Tab(
-                  text: 'Home',
-                ),
-                Tab(
-                  text: 'Category',
-                ),
-              ],
-            ),
-            const SizedBox(height: 24.0),
-            Expanded(
-              child: TabBarView(
+    return BlocProvider(
+      create: (context) {
+          final cubit = HomeCubit();
+          cubit.getHomeData();
+          return cubit;
+        },
+      child: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: Column(
+            children: [
+              TabBar(
                 controller: _tabController,
-                children: const [
-                  HomeTabView(),
-                  CategoryTabView(),
+                unselectedLabelColor: AppColors.grey,
+                tabs: const [
+                  Tab(
+                    text: 'Home',
+                  ),
+                  Tab(
+                    text: 'Category',
+                  ),
                 ],
               ),
-            ),
-          ],
+              const SizedBox(height: 24.0),
+              Expanded(
+                child: TabBarView(
+                  controller: _tabController,
+                  children: const [
+                    HomeTabView(),
+                    CategoryTabView(),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
