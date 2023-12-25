@@ -11,10 +11,13 @@ class CartPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     debugPrint(dummyCart.toString());
-    return Scaffold(
-      appBar: AppBar(),
-      body: BlocBuilder<CartCubit, CartState>(
+    return BlocBuilder<CartCubit, CartState>(
         bloc: BlocProvider.of<CartCubit>(context),
+        buildWhen: (previous, current) =>
+            current is CartLoaded ||
+            current is CartLoading ||
+            current is CartError ||
+            current is CartError,
         builder: (context, state) {
           if (state is CartLoading) {
             return const Center(
@@ -60,7 +63,6 @@ class CartPage extends StatelessWidget {
             );
           }
         },
-      ),
     );
   }
 }
