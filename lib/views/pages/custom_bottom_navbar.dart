@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_ecommerce_app/utils/app_colors.dart';
 import 'package:flutter_ecommerce_app/view_models/cart_cubit/cart_cubit.dart';
 import 'package:flutter_ecommerce_app/view_models/home_cubit/home_cubit.dart';
 import 'package:flutter_ecommerce_app/views/pages/cart_page.dart';
@@ -41,26 +42,26 @@ class _CustomBottomNavbarState extends State<CustomBottomNavbar> {
       PersistentBottomNavBarItem(
         icon: const Icon(CupertinoIcons.home),
         title: "Home",
-        activeColorPrimary: CupertinoColors.activeBlue,
-        inactiveColorPrimary: CupertinoColors.systemGrey,
+        activeColorPrimary: Theme.of(context).primaryColor,
+        inactiveColorPrimary: AppColors.grey,
       ),
       PersistentBottomNavBarItem(
         icon: const Icon(CupertinoIcons.cart),
         title: "Cart",
-        activeColorPrimary: CupertinoColors.activeBlue,
-        inactiveColorPrimary: CupertinoColors.systemGrey,
+        activeColorPrimary: Theme.of(context).primaryColor,
+        inactiveColorPrimary: AppColors.grey,
       ),
       PersistentBottomNavBarItem(
         icon: const Icon(CupertinoIcons.heart),
         title: "Favorites",
-        activeColorPrimary: CupertinoColors.activeBlue,
-        inactiveColorPrimary: CupertinoColors.systemGrey,
+        activeColorPrimary: Theme.of(context).primaryColor,
+        inactiveColorPrimary: AppColors.grey,
       ),
       PersistentBottomNavBarItem(
         icon: const Icon(CupertinoIcons.person),
         title: "Profile",
-        activeColorPrimary: CupertinoColors.activeBlue,
-        inactiveColorPrimary: CupertinoColors.systemGrey,
+        activeColorPrimary: Theme.of(context).primaryColor,
+        inactiveColorPrimary: AppColors.grey,
       ),
     ];
   }
@@ -120,7 +121,7 @@ class _CustomBottomNavbarState extends State<CustomBottomNavbar> {
           });
         },
         confineInSafeArea: true,
-        backgroundColor: Colors.white, // Default is Colors.white.
+        backgroundColor: AppColors.white, // Default is Colors.white.
         handleAndroidBackButtonPress: true, // Default is true.
         resizeToAvoidBottomInset:
             true, // This needs to be true if you want to move up the screen when keyboard appears. Default is true.
@@ -129,7 +130,7 @@ class _CustomBottomNavbarState extends State<CustomBottomNavbar> {
             true, // Recommended to set 'resizeToAvoidBottomInset' as true while using this argument. Default is true.
         decoration: NavBarDecoration(
           borderRadius: BorderRadius.circular(10.0),
-          colorBehindNavBar: Colors.white,
+          colorBehindNavBar: AppColors.white,
         ),
         popAllScreensOnTapOfSelectedTab: true,
         popActionScreens: PopActionScreensType.all,

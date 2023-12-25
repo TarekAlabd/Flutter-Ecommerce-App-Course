@@ -78,9 +78,9 @@ class CartItemWidget extends StatelessWidget {
                       },
                     ),
                     Text(
-                      '\$${cartItem.product.price}',
+                      '\$${cartItem.totalPrice.toStringAsFixed(1)}',
                       style:
-                          Theme.of(context).textTheme.headlineMedium!.copyWith(
+                          Theme.of(context).textTheme.headlineSmall!.copyWith(
                                 fontWeight: FontWeight.bold,
                               ),
                     ),
