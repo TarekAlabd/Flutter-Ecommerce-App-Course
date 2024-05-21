@@ -32,8 +32,11 @@ class _LabelWithTextFieldNewCardState extends State<LabelWithTextFieldNewCard> {
               ),
         ),
         const SizedBox(height: 16),
-        TextField(
+        TextFormField(
           controller: widget.controller,
+          validator: (value) => value == null || value.isEmpty
+              ? '${widget.label} cannot be empty!'
+              : null,
           decoration: InputDecoration(
             prefixIcon: Icon(widget.icon),
             prefixIconColor: AppColors.grey,
@@ -43,6 +46,12 @@ class _LabelWithTextFieldNewCardState extends State<LabelWithTextFieldNewCard> {
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(16),
               borderSide: BorderSide.none,
+            ),
+            errorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(16),
+              borderSide: const BorderSide(
+                color: AppColors.red,
+              ),
             ),
           ),
         ),
