@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_ecommerce_app/utils/app_routes.dart';
 import 'package:flutter_ecommerce_app/view_models/product_details_cubit/product_details_cubit.dart';
+import 'package:flutter_ecommerce_app/views/pages/add_new_card_page.dart';
 import 'package:flutter_ecommerce_app/views/pages/checkout_page.dart';
 import 'package:flutter_ecommerce_app/views/pages/custom_bottom_navbar.dart';
 import 'package:flutter_ecommerce_app/views/pages/product_details_page.dart';
@@ -18,6 +19,11 @@ class AppRouter {
       case AppRoutes.checkoutRoute:
         return MaterialPageRoute(
           builder: (_) => const CheckoutPage(),
+          settings: settings,
+        );
+      case AppRoutes.addNewCardRoute:
+        return MaterialPageRoute(
+          builder: (_) => const AddNewCardPage(),
           settings: settings,
         );
       case AppRoutes.productDetailsRoute:
