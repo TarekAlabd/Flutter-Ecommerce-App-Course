@@ -1,25 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_ecommerce_app/utils/app_colors.dart';
 
-class LabelWithTextFieldNewCard extends StatefulWidget {
+class LabelWithTextField extends StatefulWidget {
   final String label;
   final TextEditingController controller;
-  final IconData icon;
+  final IconData prefixIcon;
+  final Widget? suffixIcon;
   final String hintText;
-  const LabelWithTextFieldNewCard({
+  final bool obsecureText;
+
+  const LabelWithTextField({
     super.key,
     required this.label,
     required this.controller,
-    required this.icon,
+    required this.prefixIcon,
     required this.hintText,
+    this.suffixIcon,
+    this.obsecureText = false,
   });
 
   @override
-  State<LabelWithTextFieldNewCard> createState() =>
-      _LabelWithTextFieldNewCardState();
+  State<LabelWithTextField> createState() => _LabelWithTextFieldState();
 }
 
-class _LabelWithTextFieldNewCardState extends State<LabelWithTextFieldNewCard> {
+class _LabelWithTextFieldState extends State<LabelWithTextField> {
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -37,9 +41,12 @@ class _LabelWithTextFieldNewCardState extends State<LabelWithTextFieldNewCard> {
           validator: (value) => value == null || value.isEmpty
               ? '${widget.label} cannot be empty!'
               : null,
+          obscureText: widget.obsecureText,
           decoration: InputDecoration(
-            prefixIcon: Icon(widget.icon),
+            prefixIcon: Icon(widget.prefixIcon),
             prefixIconColor: AppColors.grey,
+            suffixIcon: widget.suffixIcon,
+            suffixIconColor: AppColors.grey,
             hintText: widget.hintText,
             fillColor: AppColors.grey1,
             filled: true,
