@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_ecommerce_app/utils/app_routes.dart';
+import 'package:flutter_ecommerce_app/view_models/add_new_card_cubit/payment_methods_cubit.dart';
 import 'package:flutter_ecommerce_app/view_models/product_details_cubit/product_details_cubit.dart';
 import 'package:flutter_ecommerce_app/views/pages/add_new_card_page.dart';
 import 'package:flutter_ecommerce_app/views/pages/checkout_page.dart';
@@ -23,7 +24,10 @@ class AppRouter {
         );
       case AppRoutes.addNewCardRoute:
         return MaterialPageRoute(
-          builder: (_) => const AddNewCardPage(),
+          builder: (_) => BlocProvider(
+            create: (context) => PaymentMethodsCubit(),
+            child: const AddNewCardPage(),
+          ),
           settings: settings,
         );
       case AppRoutes.productDetailsRoute:

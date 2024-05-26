@@ -1,13 +1,50 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_ecommerce_app/models/payment_card_model.dart';
 import 'package:flutter_ecommerce_app/utils/app_colors.dart';
+import 'package:flutter_ecommerce_app/view_models/add_new_card_cubit/payment_methods_cubit.dart';
 import 'package:flutter_ecommerce_app/view_models/checkout_cubit/checkout_cubit.dart';
 import 'package:flutter_ecommerce_app/views/widgets/checkout_headlines_item.dart';
 import 'package:flutter_ecommerce_app/views/widgets/empty_shipping_payment.dart';
+import 'package:flutter_ecommerce_app/views/widgets/payment_method_bottom_sheet.dart';
+import 'package:flutter_ecommerce_app/views/widgets/payment_method_item.dart';
 
 class CheckoutPage extends StatelessWidget {
   const CheckoutPage({super.key});
+
+  Widget _buildPaymentMethodItem(
+      PaymentCardModel? chosenCard, BuildContext context) {
+    if (chosenCard != null) {
+      return PaymentMethodItem(
+        paymentCard: chosenCard,
+        onItemTapped: () {
+          showModalBottomSheet(
+            context: context,
+            isScrollControlled: true,
+            builder: (_) {
+              return SizedBox(
+                width: double.infinity,
+                height: MediaQuery.of(context).size.height * 0.65,
+                child: BlocProvider(
+                  create: (context) {
+                    final cubit = PaymentMethodsCubit();
+                    cubit.fetchPaymentMethods();
+                    return cubit;
+                  },
+                  child: const PaymentMethodBottomSheet(),
+                ),
+              );
+            },
+          );
+        },
+      );
+    } else {
+      return const EmptyShippingAndPayment(
+        title: 'Add Payment Method',
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,6 +78,7 @@ class CheckoutPage extends StatelessWidget {
                 );
               } else if (state is CheckoutLoaded) {
                 final cartItems = state.cartItems;
+                final chosenPaymentCard = state.chosenPaymentCard;
                 return SafeArea(
                   child: SingleChildScrollView(
                       child: Padding(
@@ -144,9 +182,7 @@ class CheckoutPage extends StatelessWidget {
                         const SizedBox(height: 16.0),
                         const CheckoutHeadlinesItem(title: 'Payment Methods'),
                         const SizedBox(height: 16.0),
-                        const EmptyShippingAndPayment(
-                          title: 'Add Payment Method',
-                        ),
+                        _buildPaymentMethodItem(chosenPaymentCard, context),
                         const SizedBox(height: 16.0),
                         Divider(
                           color: AppColors.grey2,
