@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_ecommerce_app/utils/app_colors.dart';
 import 'package:flutter_ecommerce_app/view_models/choose_location_cubit/choose_location_cubit.dart';
+import 'package:flutter_ecommerce_app/views/widgets/location_item_widget.dart';
 import 'package:flutter_ecommerce_app/views/widgets/main_button.dart';
 
 class ChooseLocationPage extends StatefulWidget {
@@ -60,10 +61,13 @@ class _ChooseLocationPageState extends State<ChooseLocationPage> {
                           current is LocationAdded ||
                           current is LocationAddingFailure,
                       listenWhen: (previous, current) =>
-                          current is LocationAdded,
+                          current is LocationAdded ||
+                          current is ConfirmAddressLoaded,
                       listener: (context, state) {
                         if (state is LocationAdded) {
                           locationController.clear();
+                        } else if (state is ConfirmAddressLoaded) {
+                          Navigator.of(context).pop();
                         }
                       },
                       builder: (context, state) {
@@ -137,59 +141,32 @@ class _ChooseLocationPageState extends State<ChooseLocationPage> {
                           final location = locations[index];
                           return Padding(
                             padding: const EdgeInsets.only(bottom: 16.0),
-                            child: DecoratedBox(
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                  color: AppColors.grey,
-                                ),
-                                borderRadius: BorderRadius.circular(16),
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          location.city,
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .titleMedium,
-                                        ),
-                                        Text(
-                                          '${location.city}, ${location.country}',
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .titleSmall!
-                                              .copyWith(
-                                                color: AppColors.grey,
-                                              ),
-                                        ),
-                                      ],
-                                    ),
-                                    Stack(
-                                      alignment: Alignment.center,
-                                      children: [
-                                        const CircleAvatar(
-                                          radius: 55,
-                                          backgroundColor: AppColors.grey,
-                                        ),
-                                        CircleAvatar(
-                                          radius: 50,
-                                          backgroundImage:
-                                              CachedNetworkImageProvider(
-                                            location.imgUrl,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
+                            child: BlocBuilder<ChooseLocationCubit,
+                                ChooseLocationState>(
+                              bloc: cubit,
+                              buildWhen: (previous, current) =>
+                                  current is LocationChosen,
+                              builder: (context, state) {
+                                if (state is LocationChosen) {
+                                  final chosenLocation = state.location;
+                                  return LocationItemWidget(
+                                    onTap: () {
+                                      cubit.selectLocation(location.id);
+                                    },
+                                    location: location,
+                                    borderColor:
+                                        chosenLocation.id == location.id
+                                            ? AppColors.primary
+                                            : AppColors.grey,
+                                  );
+                                }
+                                return LocationItemWidget(
+                                  onTap: () {
+                                    cubit.selectLocation(location.id);
+                                  },
+                                  location: location,
+                                );
+                              },
                             ),
                           );
                         },
@@ -204,9 +181,25 @@ class _ChooseLocationPageState extends State<ChooseLocationPage> {
                   },
                 ),
                 const SizedBox(height: 24),
-                MainButton(
-                  text: 'Confirm',
-                  onTap: () {},
+                BlocBuilder<ChooseLocationCubit, ChooseLocationState>(
+                  bloc: cubit,
+                  buildWhen: (previous, current) =>
+                      current is ConfirmAddressLoading ||
+                      current is ConfirmAddressLoaded ||
+                      current is ConfirmAddressFailure,
+                  builder: (context, state) {
+                    if (state is ConfirmAddressLoading) {
+                      return MainButton(
+                        isLoading: true,
+                      );
+                    }
+                    return MainButton(
+                      text: 'Confirm Address',
+                      onTap: () {
+                        cubit.confirmAddress();
+                      },
+                    );
+                  },
                 ),
               ],
             ),
