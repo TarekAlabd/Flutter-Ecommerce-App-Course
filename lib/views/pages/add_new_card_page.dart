@@ -3,7 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_ecommerce_app/utils/app_colors.dart';
 import 'package:flutter_ecommerce_app/view_models/add_new_card_cubit/payment_methods_cubit.dart';
-import 'package:flutter_ecommerce_app/views/widgets/label_with_textfield_new_card.dart';
+import 'package:flutter_ecommerce_app/views/widgets/label_with_textfield.dart';
 
 class AddNewCardPage extends StatefulWidget {
   const AddNewCardPage({super.key});
@@ -36,31 +36,31 @@ class _AddNewCardPageState extends State<AddNewCardPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                LabelWithTextFieldNewCard(
+                LabelWithTextField(
                   label: 'Card Number',
                   controller: _cardNumberController,
-                  icon: Icons.credit_card,
+                  prefixIcon: Icons.credit_card,
                   hintText: 'Enter card number',
                 ),
                 const SizedBox(height: 20),
-                LabelWithTextFieldNewCard(
+                LabelWithTextField(
                   label: 'Card Holder Name',
                   controller: _cardHolderNameController,
-                  icon: Icons.person,
+                  prefixIcon: Icons.person,
                   hintText: 'Enter card holder name',
                 ),
                 const SizedBox(height: 20),
-                LabelWithTextFieldNewCard(
+                LabelWithTextField(
                   label: 'Expiry Date',
                   controller: _expiryDateController,
-                  icon: Icons.date_range,
+                  prefixIcon: Icons.date_range,
                   hintText: 'Enter expiry date',
                 ),
                 const SizedBox(height: 20),
-                LabelWithTextFieldNewCard(
+                LabelWithTextField(
                   label: 'CVV',
                   controller: _cvvController,
-                  icon: Icons.password,
+                  prefixIcon: Icons.password,
                   hintText: 'Enter cvv',
                 ),
                 const Spacer(),

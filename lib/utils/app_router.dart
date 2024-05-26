@@ -8,6 +8,7 @@ import 'package:flutter_ecommerce_app/views/pages/add_new_card_page.dart';
 import 'package:flutter_ecommerce_app/views/pages/checkout_page.dart';
 import 'package:flutter_ecommerce_app/views/pages/choose_location_page.dart';
 import 'package:flutter_ecommerce_app/views/pages/custom_bottom_navbar.dart';
+import 'package:flutter_ecommerce_app/views/pages/login_page.dart';
 import 'package:flutter_ecommerce_app/views/pages/product_details_page.dart';
 
 class AppRouter {
@@ -16,6 +17,12 @@ class AppRouter {
       case AppRoutes.homeRoute:
         return MaterialPageRoute(
           builder: (_) => const CustomBottomNavbar(),
+          settings: settings,
+        );
+      
+      case AppRoutes.loginRoute:
+        return MaterialPageRoute(
+          builder: (_) => const LoginPage(),
           settings: settings,
         );
 
