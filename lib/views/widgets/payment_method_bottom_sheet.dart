@@ -50,6 +50,10 @@ class PaymentMethodBottomSheet extends StatelessWidget {
                         return Card(
                           elevation: 0,
                           child: ListTile(
+                            onTap: () {
+                              paymentMethodsCubit
+                                  .changePaymentMethod(paymentCard.id);
+                            },
                             leading: DecoratedBox(
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(8),
@@ -69,6 +73,28 @@ class PaymentMethodBottomSheet extends StatelessWidget {
                             ),
                             title: Text(paymentCard.cardNumber),
                             subtitle: Text(paymentCard.cardHolderName),
+                            trailing: BlocBuilder<PaymentMethodsCubit,
+                                PaymentMethodsState>(
+                              bloc: paymentMethodsCubit,
+                              buildWhen: (previous, current) =>
+                                  current is PaymentMethodChosen,
+                              builder: (context, state) {
+                                if (state is PaymentMethodChosen) {
+                                  final chosenPaymentMethod =
+                                      state.chosenPayment;
+                                  return Radio<String>(
+                                    value: paymentCard.id,
+                                    groupValue: chosenPaymentMethod.id,
+                                    onChanged: (id) {
+                                      paymentMethodsCubit
+                                          .changePaymentMethod(id!);
+                                    },
+                                  );
+                                } else {
+                                  return const SizedBox();
+                                }
+                              },
+                            ),
                           ),
                         );
                       },
@@ -104,9 +130,33 @@ class PaymentMethodBottomSheet extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 24),
-              MainButton(
-                text: 'Confirm Payemnt',
-                onTap: () {},
+              BlocConsumer<PaymentMethodsCubit, PaymentMethodsState>(
+                bloc: paymentMethodsCubit,
+                listenWhen: (previous, current) =>
+                    current is ConfirmPaymentSuccess,
+                buildWhen: (previous, current) =>
+                    current is ConfirmPaymentLoading ||
+                    current is ConfirmPaymentSuccess ||
+                    current is ConfirmPaymentFailure,
+                listener: (context, state) {
+                  if (state is ConfirmPaymentSuccess) {
+                    Navigator.of(context).pop();
+                  }
+                },
+                builder: (context, state) {
+                  if (state is ConfirmPaymentLoading) {
+                    return MainButton(
+                      isLoading: true,
+                      onTap: null,
+                    );
+                  }
+                  return MainButton(
+                    text: 'Confirm Payemnt',
+                    onTap: () {
+                      paymentMethodsCubit.confirmPaymentMethod();
+                    },
+                  );
+                },
               ),
             ],
           ),

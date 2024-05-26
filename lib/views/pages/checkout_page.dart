@@ -36,7 +36,7 @@ class CheckoutPage extends StatelessWidget {
                 ),
               );
             },
-          );
+          ).then((value) => BlocProvider.of<CheckoutCubit>(context).getCartItems());
         },
       );
     } else {

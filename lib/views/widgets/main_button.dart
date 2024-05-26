@@ -6,16 +6,20 @@ class MainButton extends StatelessWidget {
   final VoidCallback? onTap;
   final Color backgroundColor;
   final Color foregroundColor;
-  final String text;
+  final String? text;
+  final bool isLoading;
 
-  const MainButton({
+  MainButton({
     super.key,
     this.height = 60,
     this.onTap,
     this.backgroundColor = AppColors.primary,
     this.foregroundColor = AppColors.white,
-    required this.text,
-  });
+    this.text,
+    this.isLoading = false,
+  }) {
+    assert(text != null || isLoading == true);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +32,11 @@ class MainButton extends StatelessWidget {
           backgroundColor: backgroundColor,
           foregroundColor: foregroundColor,
         ),
-        child: Text(text),
+        child: isLoading
+            ? const Center(
+                child: CircularProgressIndicator.adaptive(),
+              )
+            : Text(text!),
       ),
     );
   }
