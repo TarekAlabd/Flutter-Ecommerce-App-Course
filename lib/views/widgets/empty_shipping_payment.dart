@@ -6,9 +6,11 @@ import 'package:flutter_ecommerce_app/view_models/checkout_cubit/checkout_cubit.
 
 class EmptyShippingAndPayment extends StatelessWidget {
   final String title;
+  final bool isPayment;
   const EmptyShippingAndPayment({
     super.key,
     required this.title,
+    required this.isPayment,
   });
 
   @override
@@ -17,7 +19,13 @@ class EmptyShippingAndPayment extends StatelessWidget {
 
     return InkWell(
       onTap: () {
-        Navigator.of(context).pushNamed(AppRoutes.addNewCardRoute).then((value) => checkoutCubit.getCartItems(),);
+        if (isPayment) {
+          Navigator.of(context).pushNamed(AppRoutes.addNewCardRoute).then(
+                (value) => checkoutCubit.getCartItems(),
+              );
+        } else {
+          Navigator.of(context).pushNamed(AppRoutes.chooseLocation);
+        }
       },
       child: Container(
         width: double.infinity,
