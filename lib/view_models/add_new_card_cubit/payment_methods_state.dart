@@ -27,3 +27,19 @@ final class FetchPaymentMethodsError extends PaymentMethodsState {
 
   FetchPaymentMethodsError(this.errorMessage);
 }
+
+final class PaymentMethodChosen extends PaymentMethodsState {
+  final PaymentCardModel chosenPayment;
+
+  PaymentMethodChosen(this.chosenPayment);
+}
+
+final class ConfirmPaymentLoading extends PaymentMethodsState {}
+
+final class ConfirmPaymentSuccess extends PaymentMethodsState {}
+
+final class ConfirmPaymentFailure extends PaymentMethodsState {
+  final String errorMessage;
+
+  ConfirmPaymentFailure(this.errorMessage);
+}
