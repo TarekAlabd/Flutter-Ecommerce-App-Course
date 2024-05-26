@@ -36,12 +36,14 @@ class CheckoutPage extends StatelessWidget {
                 ),
               );
             },
-          ).then((value) => BlocProvider.of<CheckoutCubit>(context).getCartItems());
+          ).then((value) =>
+              BlocProvider.of<CheckoutCubit>(context).getCartItems());
         },
       );
     } else {
       return const EmptyShippingAndPayment(
         title: 'Add Payment Method',
+        isPayment: true,
       );
     }
   }
@@ -94,6 +96,7 @@ class CheckoutPage extends StatelessWidget {
                         const SizedBox(height: 16.0),
                         const EmptyShippingAndPayment(
                           title: 'Add shipping address',
+                          isPayment: false,
                         ),
                         const SizedBox(height: 16.0),
                         CheckoutHeadlinesItem(
