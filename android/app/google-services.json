@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "296136908216",
+    "project_id": "e-commerce-flutter-cours-e44cd",
+    "storage_bucket": "e-commerce-flutter-cours-e44cd.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:296136908216:android:2922b31d205eb5b54d034d",
+        "android_client_info": {
+          "package_name": "com.example.flutter_ecommerce_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCbFk7nS8xSG9ijL3g6z_sG7NLWqoHli2o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
