@@ -1,8 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 
 abstract class AuthServices {
-  Future<void> loginWithEmailAndPassword(String email, String password);
-  Future<void> registerWithEmailAndPassword(String email, String password);
+  Future<bool> loginWithEmailAndPassword(String email, String password);
+  Future<bool> registerWithEmailAndPassword(String email, String password);
 }
 
 class AuthServicesImpl implements AuthServices {
