@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 abstract class AuthServices {
   Future<bool> loginWithEmailAndPassword(String email, String password);
   Future<bool> registerWithEmailAndPassword(String email, String password);
+  User? currentUser();
 }
 
 class AuthServicesImpl implements AuthServices {
@@ -31,5 +32,10 @@ class AuthServicesImpl implements AuthServices {
     } else {
       return false;
     }
+  }
+
+  @override
+  User? currentUser() {
+    return _firebaseAuth.currentUser;
   }
 }
