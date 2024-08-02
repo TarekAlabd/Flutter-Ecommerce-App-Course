@@ -11,7 +11,8 @@ class AuthCubit extends Cubit<AuthState> {
   Future<void> loginWithEmailAndPassword(String email, String password) async {
     emit(AuthLoading());
     try {
-      final result = await authServices.loginWithEmailAndPassword(email, password);
+      final result =
+          await authServices.loginWithEmailAndPassword(email, password);
       if (result) {
         emit(const AuthDone());
       } else {
@@ -22,10 +23,12 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
-  Future<void> registerWithEmailAndPassword(String email, String password) async {
+  Future<void> registerWithEmailAndPassword(
+      String email, String password) async {
     emit(AuthLoading());
     try {
-      final result = await authServices.registerWithEmailAndPassword(email, password);
+      final result =
+          await authServices.registerWithEmailAndPassword(email, password);
       if (result) {
         emit(const AuthDone());
       } else {
@@ -40,6 +43,16 @@ class AuthCubit extends Cubit<AuthState> {
     final user = authServices.currentUser();
     if (user != null) {
       emit(const AuthDone());
+    }
+  }
+
+  Future<void> logout() async {
+    emit(const AuthLoggingOut());
+    try {
+      await authServices.logout();
+      emit(const AuthLoggedOut());
+    } catch (e) {
+      emit(AuthLogOutError(e.toString()));
     }
   }
 }

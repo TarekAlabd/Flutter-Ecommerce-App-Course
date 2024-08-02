@@ -17,3 +17,17 @@ final class AuthError extends AuthState {
 
   const AuthError(this.message);
 }
+
+final class AuthLoggedOut extends AuthState {
+  const AuthLoggedOut();
+}
+
+final class AuthLoggingOut extends AuthState {
+  const AuthLoggingOut();
+}
+
+final class AuthLogOutError extends AuthState {
+  final String message;
+
+  const AuthLogOutError(this.message);
+}

@@ -4,6 +4,7 @@ abstract class AuthServices {
   Future<bool> loginWithEmailAndPassword(String email, String password);
   Future<bool> registerWithEmailAndPassword(String email, String password);
   User? currentUser();
+  Future<void> logout();
 }
 
 class AuthServicesImpl implements AuthServices {
@@ -37,5 +38,10 @@ class AuthServicesImpl implements AuthServices {
   @override
   User? currentUser() {
     return _firebaseAuth.currentUser;
+  }
+  
+  @override
+  Future<void> logout() async {
+    await _firebaseAuth.signOut();
   }
 }
