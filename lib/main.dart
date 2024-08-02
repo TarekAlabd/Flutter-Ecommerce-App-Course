@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_ecommerce_app/utils/app_router.dart';
 import 'package:flutter_ecommerce_app/utils/app_routes.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  Firebase.initializeApp();
+  await Firebase.initializeApp();
   runApp(const MyApp());
 }
 
