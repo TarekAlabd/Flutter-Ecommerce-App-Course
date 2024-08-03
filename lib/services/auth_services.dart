@@ -44,6 +44,7 @@ class AuthServicesImpl implements AuthServices {
 
   @override
   Future<void> logout() async {
+    await GoogleSignIn().signOut();
     await _firebaseAuth.signOut();
   }
 
@@ -56,7 +57,7 @@ class AuthServicesImpl implements AuthServices {
       idToken: gAuth?.idToken,
     );
     final userCredential = await _firebaseAuth.signInWithCredential(credential);
-    
+
     if (userCredential.user != null) {
       return true;
     } else {

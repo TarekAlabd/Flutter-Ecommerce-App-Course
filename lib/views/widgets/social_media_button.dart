@@ -3,16 +3,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_ecommerce_app/utils/app_colors.dart';
 
 class SocialMediaButton extends StatelessWidget {
-  final String text;
-  final String imgUrl;
-  final VoidCallback onTap;
+  final String? text;
+  final String? imgUrl;
+  final VoidCallback? onTap;
+  final bool isLoading;
 
-  const SocialMediaButton({
+  SocialMediaButton({
     super.key,
-    required this.text,
-    required this.imgUrl,
-    required this.onTap,
-  });
+    this.text,
+    this.imgUrl,
+    this.onTap,
+    this.isLoading = false,
+  }) {
+    assert((text != null && imgUrl != null) || isLoading == true);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,17 +31,17 @@ class SocialMediaButton extends StatelessWidget {
         ),
         child: Padding(
           padding: const EdgeInsets.all(16.0),
-          child: Row(
+          child: isLoading ? const CircularProgressIndicator.adaptive() : Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               CachedNetworkImage(
-                imageUrl: imgUrl,
+                imageUrl: imgUrl!,
                 width: 25,
                 height: 25,
                 fit: BoxFit.fill,
               ),
               const SizedBox(width: 16),
-              Text(text),
+              Text(text!),
             ],
           ),
         ),
