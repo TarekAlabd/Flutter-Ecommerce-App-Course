@@ -45,3 +45,17 @@ final class GoogleAuthError extends AuthState {
 final class GoogleAuthDone extends AuthState {
   const GoogleAuthDone();
 }
+
+final class FacebookAuthenticating extends AuthState {
+  const FacebookAuthenticating();
+}
+
+final class FacebookAuthError extends AuthState {
+  final String message;
+
+  const FacebookAuthError(this.message);
+}
+
+final class FacebookAuthDone extends AuthState {
+  const FacebookAuthDone();
+}
