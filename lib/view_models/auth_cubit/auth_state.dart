@@ -31,3 +31,17 @@ final class AuthLogOutError extends AuthState {
 
   const AuthLogOutError(this.message);
 }
+
+final class GoogleAuthenticating extends AuthState {
+  const GoogleAuthenticating();
+}
+
+final class GoogleAuthError extends AuthState {
+  final String message;
+
+  const GoogleAuthError(this.message);
+}
+
+final class GoogleAuthDone extends AuthState {
+  const GoogleAuthDone();
+}

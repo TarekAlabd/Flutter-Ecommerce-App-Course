@@ -17,7 +17,9 @@ dependencies:
   flutter_bloc: ^8.1.6
   flutter_carousel_widget: ^2.3.0
   flutter_dash: ^1.0.0
+  flutter_facebook_auth: ^7.0.1
   flutter_native_splash: ^2.4.1
+  google_sign_in: ^6.2.1
   persistent_bottom_nav_bar_v2: ^5.3.0
 
 dev_dependencies:
