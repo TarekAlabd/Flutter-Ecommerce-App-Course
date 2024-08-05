@@ -107,6 +107,7 @@ class _LoginPageState extends State<RegisterPage> {
                             await cubit.registerWithEmailAndPassword(
                               emailController.text,
                               passwordController.text,
+                              usernameController.text,
                             );
                           }
                         },
@@ -133,18 +134,70 @@ class _LoginPageState extends State<RegisterPage> {
                                   ),
                         ),
                         const SizedBox(height: 16),
-                        SocialMediaButton(
-                          text: 'Signup with Google',
-                          imgUrl:
-                              'https://cdn1.iconfinder.com/data/icons/google-s-logo/150/Google_Icons-09-512.png',
-                          onTap: () {},
+                        BlocConsumer<AuthCubit, AuthState>(
+                          bloc: cubit,
+                          listenWhen: (previous, current) =>
+                              current is GoogleAuthDone ||
+                              current is GoogleAuthError,
+                          listener: (context, state) {
+                            if (state is GoogleAuthDone) {
+                              Navigator.of(context)
+                                  .pushNamed(AppRoutes.homeRoute);
+                            } else if (state is GoogleAuthError) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(state.message),
+                                ),
+                              );
+                            }
+                          },
+                          buildWhen: (previous, current) =>
+                              current is GoogleAuthenticating ||
+                              current is GoogleAuthError ||
+                              current is GoogleAuthDone,
+                          builder: (context, state) {
+                            if (state is GoogleAuthenticating) {
+                              return SocialMediaButton(
+                                isLoading: true,
+                              );
+                            }
+                            return SocialMediaButton(
+                              text: 'SignUp with Google',
+                              imgUrl:
+                                  'https://cdn1.iconfinder.com/data/icons/google-s-logo/150/Google_Icons-09-512.png',
+                              onTap: () async =>
+                                  await cubit.authenticateWithGoogle(),
+                            );
+                          },
                         ),
                         const SizedBox(height: 16),
-                        SocialMediaButton(
-                          text: 'Signup with Facebook',
-                          imgUrl:
-                              'https://www.freepnglogos.com/uploads/facebook-logo-icon/facebook-logo-icon-facebook-logo-png-transparent-svg-vector-bie-supply-15.png',
-                          onTap: () {},
+                        BlocConsumer<AuthCubit, AuthState>(
+                          bloc: cubit,
+                          listenWhen: (previous, current) => current is FacebookAuthDone || current is FacebookAuthError,
+                          listener: (context, state) {
+                            if (state is FacebookAuthDone) {
+                              Navigator.of(context).pushNamed(AppRoutes.homeRoute);
+                            } else if (state is FacebookAuthError) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(state.message),
+                                ),
+                              );
+                            }
+                          },
+                          builder: (context, state) {
+                            if (state is FacebookAuthenticating) {
+                              return SocialMediaButton(
+                                isLoading: true,
+                              );
+                            }
+                            return SocialMediaButton(
+                              text: 'SignUp with Facebook',
+                              imgUrl:
+                                  'https://www.freepnglogos.com/uploads/facebook-logo-icon/facebook-logo-icon-facebook-logo-png-transparent-svg-vector-bie-supply-15.png',
+                              onTap: () async => await cubit.authenticateWithFacebook(),
+                            );
+                          },
                         ),
                       ],
                     ),
