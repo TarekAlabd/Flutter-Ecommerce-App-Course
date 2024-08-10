@@ -17,9 +17,7 @@ final class HomeLoaded extends HomeState {
 }
 
 final class HomeError extends HomeState {
-  HomeError({
-    required this.message,
-  });
+  HomeError(this.message);
 
   final String message;
 }

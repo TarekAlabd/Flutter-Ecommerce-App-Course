@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 enum ProductSize {
   S,
   M,
@@ -48,6 +50,34 @@ class ProductItemModel {
       isFavorite: isFavorite ?? this.isFavorite,
       category: category ?? this.category,
       averageRate: averageRate ?? this.averageRate,
+    );
+  }
+
+  Map<String, dynamic> toMap() {
+    final result = <String, dynamic>{};
+  
+    result.addAll({'id': id});
+    result.addAll({'name': name});
+    result.addAll({'imgUrl': imgUrl});
+    result.addAll({'description': description});
+    result.addAll({'price': price});
+    result.addAll({'isFavorite': isFavorite});
+    result.addAll({'category': category});
+    result.addAll({'averageRate': averageRate});
+  
+    return result;
+  }
+
+  factory ProductItemModel.fromMap(Map<String, dynamic> map, String documentId) {
+    return ProductItemModel(
+      id: documentId,
+      name: map['name'] ?? '',
+      imgUrl: map['imgUrl'] ?? '',
+      description: map['description'] ?? '',
+      price: map['price']?.toDouble() ?? 0.0,
+      isFavorite: map['isFavorite'] ?? false,
+      category: map['category'] ?? '',
+      averageRate: map['averageRate']?.toDouble() ?? 0.0,
     );
   }
 }
