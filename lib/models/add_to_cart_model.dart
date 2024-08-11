@@ -6,7 +6,7 @@ class AddToCartModel {
   final ProductSize size;
   final int quantity;
 
-  AddToCartModel({
+  const AddToCartModel({
     required this.id,
     required this.product,
     required this.size,
@@ -26,6 +26,26 @@ class AddToCartModel {
       product: product ?? this.product,
       size: size ?? this.size,
       quantity: quantity ?? this.quantity,
+    );
+  }
+
+  Map<String, dynamic> toMap() {
+    final result = <String, dynamic>{};
+  
+    result.addAll({'id': id});
+    result.addAll({'product': product.toMap()});
+    result.addAll({'size': size.name});
+    result.addAll({'quantity': quantity});
+  
+    return result;
+  }
+
+  factory AddToCartModel.fromMap(Map<String, dynamic> map) {
+    return AddToCartModel(
+      id: map['id'] ?? '',
+      product: ProductItemModel.fromMap(map['product']),
+      size: ProductSize.fromString(map['size']),
+      quantity: map['quantity']?.toInt() ?? 0,
     );
   }
 }

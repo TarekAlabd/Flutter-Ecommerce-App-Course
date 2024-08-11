@@ -15,7 +15,6 @@ class HomeServicesImpl implements HomeServices {
       path: ApiPaths.products(),
       builder: (data, documentId) => ProductItemModel.fromMap(
         data,
-        documentId,
       ),
     );
     return result;
