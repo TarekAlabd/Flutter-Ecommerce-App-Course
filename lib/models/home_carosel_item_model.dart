@@ -6,6 +6,22 @@ class HomeCarouselItemModel {
     required this.id,
     required this.imgUrl,
   });
+
+  Map<String, dynamic> toMap() {
+    final result = <String, dynamic>{};
+  
+    result.addAll({'id': id});
+    result.addAll({'imgUrl': imgUrl});
+  
+    return result;
+  }
+
+  factory HomeCarouselItemModel.fromMap(Map<String, dynamic> map) {
+    return HomeCarouselItemModel(
+      id: map['id'] ?? '',
+      imgUrl: map['imgUrl'] ?? '',
+    );
+  }
 }
 
 List<HomeCarouselItemModel> dummyHomeCarouselItems = [

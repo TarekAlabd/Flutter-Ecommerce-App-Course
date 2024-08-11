@@ -14,7 +14,7 @@ class HomeCubit extends Cubit<HomeState> {
     emit(HomeLoading());
     try {
       final products = await homeServices.fetchProducts();
-      final carouselItems = dummyHomeCarouselItems;
+      final carouselItems = await homeServices.fetchCarouselItems();
       
       emit(HomeLoaded(
         carouselItems: carouselItems,
