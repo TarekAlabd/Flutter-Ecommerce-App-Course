@@ -1,10 +1,23 @@
-import 'dart:convert';
-
 enum ProductSize {
   S,
   M,
   L,
-  XL,
+  XL;
+
+  static ProductSize fromString(String size) {
+    switch (size.toUpperCase()) {
+      case 'S':
+        return ProductSize.S;
+      case 'M':
+        return ProductSize.M;
+      case 'L':
+        return ProductSize.L;
+      case 'XL':
+        return ProductSize.XL;
+      default:
+        return ProductSize.S;
+    }
+  }
 }
 
 class ProductItemModel {
@@ -55,7 +68,7 @@ class ProductItemModel {
 
   Map<String, dynamic> toMap() {
     final result = <String, dynamic>{};
-  
+
     result.addAll({'id': id});
     result.addAll({'name': name});
     result.addAll({'imgUrl': imgUrl});
@@ -64,13 +77,14 @@ class ProductItemModel {
     result.addAll({'isFavorite': isFavorite});
     result.addAll({'category': category});
     result.addAll({'averageRate': averageRate});
-  
+
     return result;
   }
 
-  factory ProductItemModel.fromMap(Map<String, dynamic> map, String documentId) {
+  factory ProductItemModel.fromMap(
+      Map<String, dynamic> map) {
     return ProductItemModel(
-      id: documentId,
+      id: map['id'] ?? '',
       name: map['name'] ?? '',
       imgUrl: map['imgUrl'] ?? '',
       description: map['description'] ?? '',
