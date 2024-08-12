@@ -21,3 +21,17 @@ final class HomeError extends HomeState {
 
   final String message;
 }
+
+final class SetFavoriteLoading extends HomeState {}
+
+final class SetFavoriteSuccess extends HomeState {
+  final bool isFavorite;
+
+  SetFavoriteSuccess({required this.isFavorite});
+}
+
+final class SetFavoriteError extends HomeState {
+  SetFavoriteError(this.message);
+
+  final String message;
+}

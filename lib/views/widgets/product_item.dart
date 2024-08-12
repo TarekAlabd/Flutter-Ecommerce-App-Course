@@ -1,7 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_ecommerce_app/models/product_item_model.dart';
 import 'package:flutter_ecommerce_app/utils/app_colors.dart';
+import 'package:flutter_ecommerce_app/view_models/home_cubit/home_cubit.dart';
 
 class ProductItem extends StatelessWidget {
   final ProductItemModel productItem;
@@ -9,6 +11,8 @@ class ProductItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final homeCubit = BlocProvider.of<HomeCubit>(context);
+
     return Column(
       children: [
         Stack(
@@ -43,9 +47,41 @@ class ProductItem extends StatelessWidget {
                   shape: BoxShape.circle,
                   color: Colors.white54,
                 ),
-                child: IconButton(
-                  onPressed: () {},
-                  icon: const Icon(Icons.favorite_border),
+                child: Padding(
+                  padding: const EdgeInsets.all(4.0),
+                  child: BlocBuilder<HomeCubit, HomeState>(
+                    bloc: homeCubit,
+                    buildWhen: (previous, current) => current is SetFavoriteSuccess || current is SetFavoriteError || current is SetFavoriteLoading,
+                    builder: (context, state) {
+                      if (state is SetFavoriteLoading) {
+                        return const CircularProgressIndicator.adaptive();
+                      } else if (state is SetFavoriteSuccess) {
+                        return state.isFavorite
+                            ? InkWell(
+                                onTap: () async =>
+                                    await homeCubit.setFavorite(productItem),
+                                child: const Icon(
+                                  Icons.favorite,
+                                  color: Colors.red,
+                                ),
+                              )
+                            : InkWell(
+                                onTap: () async =>
+                                    await homeCubit.setFavorite(productItem),
+                                child: const Icon(
+                                  Icons.favorite_border,
+                                ),
+                              );
+                      }
+                      return InkWell(
+                        onTap: () async =>
+                            await homeCubit.setFavorite(productItem),
+                        child: const Icon(
+                          Icons.favorite_border,
+                        ),
+                      );
+                    },
+                  ),
                 ),
               ),
             ),
