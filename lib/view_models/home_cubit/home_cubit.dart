@@ -15,12 +15,23 @@ class HomeCubit extends Cubit<HomeState> {
   Future<void> getHomeData() async {
     emit(HomeLoading());
     try {
+      final currentUser = authServices.currentUser();
       final products = await homeServices.fetchProducts();
       final carouselItems = await homeServices.fetchCarouselItems();
+      final favoriteProducts = await homeServices.fetchFavoriteProducts(
+        currentUser!.uid,
+      );
+
+      final List<ProductItemModel> finalProducts = products.map((product) {
+        final isFavorite = favoriteProducts.any(
+          (item) => item.id == product.id,
+        );
+        return product.copyWith(isFavorite: isFavorite);
+      }).toList();
 
       emit(HomeLoaded(
         carouselItems: carouselItems,
-        products: products,
+        products: finalProducts,
       ));
     } catch (e) {
       emit(HomeError(e.toString()));
@@ -28,7 +39,7 @@ class HomeCubit extends Cubit<HomeState> {
   }
 
   Future<void> setFavorite(ProductItemModel product) async {
-    emit(SetFavoriteLoading());
+    emit(SetFavoriteLoading(product.id));
     try {
       final currentUser = authServices.currentUser();
       final favoriteProducts = await homeServices.fetchFavoriteProducts(
@@ -48,9 +59,9 @@ class HomeCubit extends Cubit<HomeState> {
           product: product,
         );
       }
-      emit(SetFavoriteSuccess(isFavorite: !isFavorite));
+      emit(SetFavoriteSuccess(isFavorite: !isFavorite, productId: product.id));
     } catch (e) {
-      emit(SetFavoriteError(e.toString()));
+      emit(SetFavoriteError(e.toString(), product.id));
     }
   }
 }

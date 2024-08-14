@@ -51,7 +51,13 @@ class ProductItem extends StatelessWidget {
                   padding: const EdgeInsets.all(4.0),
                   child: BlocBuilder<HomeCubit, HomeState>(
                     bloc: homeCubit,
-                    buildWhen: (previous, current) => current is SetFavoriteSuccess || current is SetFavoriteError || current is SetFavoriteLoading,
+                    buildWhen: (previous, current) =>
+                        (current is SetFavoriteSuccess &&
+                            current.productId == productItem.id) ||
+                        (current is SetFavoriteError &&
+                            current.productId == productItem.id) ||
+                        (current is SetFavoriteLoading &&
+                            current.productId == productItem.id),
                     builder: (context, state) {
                       if (state is SetFavoriteLoading) {
                         return const CircularProgressIndicator.adaptive();
@@ -76,9 +82,14 @@ class ProductItem extends StatelessWidget {
                       return InkWell(
                         onTap: () async =>
                             await homeCubit.setFavorite(productItem),
-                        child: const Icon(
-                          Icons.favorite_border,
-                        ),
+                        child: productItem.isFavorite
+                            ? const Icon(
+                                Icons.favorite,
+                                color: Colors.red,
+                              )
+                            : const Icon(
+                                Icons.favorite_border,
+                              ),
                       );
                     },
                   ),
