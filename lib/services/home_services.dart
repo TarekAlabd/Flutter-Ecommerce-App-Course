@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter_ecommerce_app/models/category_model.dart';
 import 'package:flutter_ecommerce_app/models/home_carosel_item_model.dart';
 import 'package:flutter_ecommerce_app/models/product_item_model.dart';
