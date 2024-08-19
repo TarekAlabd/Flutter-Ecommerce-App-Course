@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_ecommerce_app/utils/app_router.dart';
 import 'package:flutter_ecommerce_app/utils/app_routes.dart';
 import 'package:flutter_ecommerce_app/view_models/auth_cubit/auth_cubit.dart';
+import 'package:flutter_ecommerce_app/view_models/favorite_cubit/favorite_cubit.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -17,12 +18,23 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) {
-        final cubit = AuthCubit();
-        cubit.checkAuth();
-        return cubit;
-      },
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<AuthCubit>(
+          create: (context) {
+            final cubit = AuthCubit();
+            cubit.checkAuth();
+            return cubit;
+          },
+        ),
+        BlocProvider<FavoriteCubit>(
+          create: (context) {
+            final cubit = FavoriteCubit();
+            cubit.getFavoriteProducts();
+            return cubit;
+          },
+        ),
+      ],
       child: Builder(builder: (context) {
         final authCubit = BlocProvider.of<AuthCubit>(context);
 

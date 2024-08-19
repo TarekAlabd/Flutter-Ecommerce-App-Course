@@ -32,6 +32,10 @@ class FavoriteCubit extends Cubit<FavoriteState> {
         productId,
       );
       emit(FavoriteRemoved(productId));
+      final favoriteProducts = await favoriteServices.getFavorites(
+        currentUser.uid,
+      );
+      emit(FavoriteLoaded(favoriteProducts));
     } catch (e) {
       emit(FavoriteRemoveError(e.toString()));
     }
