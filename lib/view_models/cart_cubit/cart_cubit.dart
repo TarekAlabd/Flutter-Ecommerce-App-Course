@@ -17,45 +17,60 @@ class CartCubit extends Cubit<CartState> {
     try {
       final currentUser = authServices.currentUser();
       final cartItems = await cartServices.fetchCartItems(currentUser!.uid);
-      final subtotal = cartItems.fold<double>(
-          0,
-          (previousValue, item) =>
-              previousValue + (item.product.price * item.quantity));
-      emit(CartLoaded(cartItems, subtotal));
+
+      emit(CartLoaded(cartItems, _subtotal(cartItems)));
     } catch (e) {
       emit(CartError(e.toString()));
     }
   }
 
-  void incrementCounter(String productId, [int? initialValue]) {
+  Future<void> incrementCounter(AddToCartModel cartItem,
+      [int? initialValue]) async {
     if (initialValue != null) {
       quantity = initialValue;
     }
     quantity++;
-    final index = dummyCart.indexWhere((item) => item.product.id == productId);
-    dummyCart[index] = dummyCart[index].copyWith(quantity: quantity);
-    emit(QuantityCounterLoaded(
-      value: quantity,
-      productId: productId,
-    ));
-    emit(SubtotalUpdated(_subtotal));
+    try {
+      emit(QuantityCounterLoading());
+      final updatedCartItem = cartItem.copyWith(quantity: quantity);
+      final currentUser = authServices.currentUser();
+
+      await cartServices.setCartItem(currentUser!.uid, updatedCartItem);
+      emit(QuantityCounterLoaded(
+        value: quantity,
+        productId: updatedCartItem.product.id,
+      ));
+      final cartItems = await cartServices.fetchCartItems(currentUser.uid);
+      emit(SubtotalUpdated(_subtotal(cartItems)));
+    } catch (e) {
+      emit(QuantityCounterError(e.toString()));
+    }
   }
 
-  void decrementCounter(String productId, [int? initialValue]) {
+  Future<void> decrementCounter(AddToCartModel cartItem,
+      [int? initialValue]) async {
     if (initialValue != null) {
       quantity = initialValue;
     }
     quantity--;
-    final index = dummyCart.indexWhere((item) => item.product.id == productId);
-    dummyCart[index] = dummyCart[index].copyWith(quantity: quantity);
-    emit(QuantityCounterLoaded(
-      value: quantity,
-      productId: productId,
-    ));
-    emit(SubtotalUpdated(_subtotal));
+    try {
+      emit(QuantityCounterLoading());
+      final updatedCartItem = cartItem.copyWith(quantity: quantity);
+      final currentUser = authServices.currentUser();
+
+      await cartServices.setCartItem(currentUser!.uid, updatedCartItem);
+      emit(QuantityCounterLoaded(
+        value: quantity,
+        productId: updatedCartItem.product.id,
+      ));
+      final cartItems = await cartServices.fetchCartItems(currentUser.uid);
+      emit(SubtotalUpdated(_subtotal(cartItems)));
+    } catch (e) {
+      emit(QuantityCounterError(e.toString()));
+    }
   }
 
-  double get _subtotal => dummyCart.fold<double>(
+  double _subtotal(List<AddToCartModel> cartItems) => cartItems.fold<double>(
       0,
       (previousValue, item) =>
           previousValue + (item.product.price * item.quantity));

@@ -28,6 +28,14 @@ final class QuantityCounterLoaded extends CartState {
   const QuantityCounterLoaded({required this.value, required this.productId,});
 }
 
+final class QuantityCounterError extends CartState {
+  final String message;
+
+  const QuantityCounterError(this.message);
+}
+
+final class QuantityCounterLoading extends CartState {}
+
 final class SubtotalUpdated extends CartState {
   final double subtotal;
 

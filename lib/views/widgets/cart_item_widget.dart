@@ -65,7 +65,7 @@ class CartItemWidget extends StatelessWidget {
                         children: [
                           CounterWidget(
                             value: state.value,
-                            productId: cartItem.product.id,
+                            cartItem: cartItem,
                             cubit: cubit,
                           ),
                           Text(
@@ -83,9 +83,10 @@ class CartItemWidget extends StatelessWidget {
                     return Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
+                        // TODO: We need to make the counter in the cart separate from the counter in the product details
                         CounterWidget(
                           value: cartItem.quantity,
-                          productId: cartItem.product.id,
+                          cartItem: cartItem,
                           cubit: cubit,
                           initialValue: cartItem.quantity,
                         ),
