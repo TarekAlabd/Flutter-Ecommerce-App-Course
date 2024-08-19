@@ -1,7 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_ecommerce_app/utils/app_colors.dart';
+import 'package:flutter_ecommerce_app/view_models/favorite_cubit/favorite_cubit.dart';
 import 'package:flutter_ecommerce_app/views/pages/cart_page.dart';
 import 'package:flutter_ecommerce_app/views/pages/favorites_page.dart';
 import 'package:flutter_ecommerce_app/views/pages/home_page.dart';
