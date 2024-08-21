@@ -18,6 +18,8 @@ class CheckoutPage extends StatelessWidget {
 
   Widget _buildPaymentMethodItem(
       PaymentCardModel? chosenCard, BuildContext context) {
+    final checkoutCubit = BlocProvider.of<CheckoutCubit>(context);
+    final paymentCubit = BlocProvider.of<PaymentMethodsCubit>(context);
     if (chosenCard != null) {
       return PaymentMethodItem(
         paymentCard: chosenCard,
@@ -39,8 +41,9 @@ class CheckoutPage extends StatelessWidget {
                 ),
               );
             },
-          ).then((value) =>
-              BlocProvider.of<CheckoutCubit>(context).getCartItems());
+          ).then((value) async {
+            checkoutCubit.getCartItems();
+          });
         },
       );
     } else {
@@ -93,12 +96,19 @@ class CheckoutPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) {
-        final cubit = CheckoutCubit();
-        cubit.getCartItems();
-        return cubit;
-      },
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) {
+            final cubit = CheckoutCubit();
+            cubit.getCartItems();
+            return cubit;
+          },
+        ),
+        BlocProvider(
+          create: (context) => PaymentMethodsCubit(),
+        ),
+      ],
       child: Scaffold(
         appBar: AppBar(
           title: const Text('Checkout'),
