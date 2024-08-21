@@ -111,7 +111,13 @@ class PaymentMethodBottomSheet extends StatelessWidget {
               const SizedBox(height: 8),
               InkWell(
                 onTap: () {
-                  Navigator.of(context).pushNamed(AppRoutes.addNewCardRoute);
+                  Navigator.of(context)
+                      .pushNamed(AppRoutes.addNewCardRoute,
+                          arguments: paymentMethodsCubit)
+                      .then(
+                        (value) async =>
+                            await paymentMethodsCubit.fetchPaymentMethods(),
+                      );
                 },
                 child: Card(
                   elevation: 0,

@@ -6,7 +6,7 @@ class PaymentCardModel {
   final String cvv;
   final bool isChosen;
 
-  PaymentCardModel({
+  const PaymentCardModel({
     required this.id,
     required this.cardNumber,
     required this.cardHolderName,
@@ -30,6 +30,30 @@ class PaymentCardModel {
       expiryDate: expiryDate ?? this.expiryDate,
       cvv: cvv ?? this.cvv,
       isChosen: isChosen ?? this.isChosen,
+    );
+  }
+
+  Map<String, dynamic> toMap() {
+    final result = <String, dynamic>{};
+  
+    result.addAll({'id': id});
+    result.addAll({'cardNumber': cardNumber});
+    result.addAll({'cardHolderName': cardHolderName});
+    result.addAll({'expiryDate': expiryDate});
+    result.addAll({'cvv': cvv});
+    result.addAll({'isChosen': isChosen});
+  
+    return result;
+  }
+
+  factory PaymentCardModel.fromMap(Map<String, dynamic> map) {
+    return PaymentCardModel(
+      id: map['id'] ?? '',
+      cardNumber: map['cardNumber'] ?? '',
+      cardHolderName: map['cardHolderName'] ?? '',
+      expiryDate: map['expiryDate'] ?? '',
+      cvv: map['cvv'] ?? '',
+      isChosen: map['isChosen'] ?? false,
     );
   }
 }
