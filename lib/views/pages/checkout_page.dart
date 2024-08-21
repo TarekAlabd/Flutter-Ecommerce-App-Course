@@ -42,7 +42,7 @@ class CheckoutPage extends StatelessWidget {
               );
             },
           ).then((value) async {
-            checkoutCubit.getCartItems();
+            await checkoutCubit.getCartItems();
           });
         },
       );
@@ -150,7 +150,7 @@ class CheckoutPage extends StatelessWidget {
                             Navigator.of(context)
                                 .pushNamed(AppRoutes.chooseLocation)
                                 .then(
-                                  (value) => cubit.getCartItems(),
+                                  (value) async => await cubit.getCartItems(),
                                 );
                           },
                         ),
