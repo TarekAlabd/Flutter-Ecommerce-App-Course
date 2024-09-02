@@ -29,6 +29,28 @@ class LocationItemModel {
       isChosen: isChosen ?? this.isChosen,
     );
   }
+
+  Map<String, dynamic> toMap() {
+    final result = <String, dynamic>{};
+  
+    result.addAll({'id': id});
+    result.addAll({'city': city});
+    result.addAll({'country': country});
+    result.addAll({'imgUrl': imgUrl});
+    result.addAll({'isChosen': isChosen});
+  
+    return result;
+  }
+
+  factory LocationItemModel.fromMap(Map<String, dynamic> map) {
+    return LocationItemModel(
+      id: map['id'] ?? '',
+      city: map['city'] ?? '',
+      country: map['country'] ?? '',
+      imgUrl: map['imgUrl'] ?? '',
+      isChosen: map['isChosen'] ?? false,
+    );
+  }
 }
 
 List<LocationItemModel> dummyLocations = [

@@ -1,10 +1,15 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_ecommerce_app/models/location_item_model.dart';
+import 'package:flutter_ecommerce_app/services/auth_services.dart';
+import 'package:flutter_ecommerce_app/services/location_services.dart';
 
 part 'choose_location_state.dart';
 
 class ChooseLocationCubit extends Cubit<ChooseLocationState> {
   ChooseLocationCubit() : super(ChooseLocationInitial());
+
+  final locationServices = LocationServicesImpl();
+  final authServices = AuthServicesImpl();
 
   String selectedLocationId = dummyLocations.first.id;
 
@@ -18,22 +23,22 @@ class ChooseLocationCubit extends Cubit<ChooseLocationState> {
     );
   }
 
-  void addLocation(String location) {
+  Future<void> addLocation(String location) async {
     emit(AddingLocation());
-    Future.delayed(
-      const Duration(seconds: 1),
-      () {
-        final splittedLocations = location.split('-');
-        final locationItem = LocationItemModel(
-          id: DateTime.now().toIso8601String(),
-          city: splittedLocations[0],
-          country: splittedLocations[1],
-        );
-        dummyLocations.add(locationItem);
-        emit(LocationAdded());
-        emit(FetchedLocations(dummyLocations));
-      },
-    );
+    try {
+      final splittedLocations = location.split('-');
+      final locationItem = LocationItemModel(
+        id: DateTime.now().toIso8601String(),
+        city: splittedLocations[0],
+        country: splittedLocations[1],
+      );
+      final currentUser = authServices.currentUser();
+      await locationServices.addLocation(locationItem, currentUser!.uid);
+      emit(LocationAdded());
+      emit(FetchedLocations(dummyLocations));
+    } catch (e) {
+      emit(LocationAddingFailure(e.toString()));
+    }
   }
 
   void selectLocation(String id) {
