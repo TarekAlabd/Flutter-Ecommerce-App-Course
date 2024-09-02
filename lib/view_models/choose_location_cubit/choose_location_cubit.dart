@@ -11,14 +11,24 @@ class ChooseLocationCubit extends Cubit<ChooseLocationState> {
   final locationServices = LocationServicesImpl();
   final authServices = AuthServicesImpl();
 
-  String selectedLocationId = dummyLocations.first.id;
+  String? selectedLocationId;
+  LocationItemModel? selectedLocation;
 
   Future<void> fetchLocations() async {
     emit(FetchingLocations());
     try {
       final currentUser = authServices.currentUser();
       final locations = await locationServices.fetchLocations(currentUser!.uid);
+      for (var location in locations) {
+        if (location.isChosen) {
+          selectedLocationId = location.id;
+          selectedLocation = location;
+        }
+      }
+      selectedLocationId ??= locations.first.id;
+      selectedLocation ??= locations.first;
       emit(FetchedLocations(locations));
+      emit(LocationChosen(selectedLocation!));
     } catch (e) {
       emit(FetchLocationsFailure(e.toString()));
     }
@@ -34,7 +44,7 @@ class ChooseLocationCubit extends Cubit<ChooseLocationState> {
         country: splittedLocations[1],
       );
       final currentUser = authServices.currentUser();
-      await locationServices.addLocation(locationItem, currentUser!.uid);
+      await locationServices.setLocation(locationItem, currentUser!.uid);
       emit(LocationAdded());
       final locations = await locationServices.fetchLocations(currentUser.uid);
       emit(FetchedLocations(locations));
@@ -43,34 +53,32 @@ class ChooseLocationCubit extends Cubit<ChooseLocationState> {
     }
   }
 
-  void selectLocation(String id) {
+  Future<void> selectLocation(String id) async {
     selectedLocationId = id;
-    final chosenLocation = dummyLocations
-        .firstWhere((location) => location.id == selectedLocationId);
+    final currentUser = authServices.currentUser();
+    final chosenLocation =
+        await locationServices.fetchLocation(currentUser!.uid, id);
+    selectedLocation = chosenLocation;
     emit(LocationChosen(chosenLocation));
   }
 
-  void confirmAddress() {
+  Future<void> confirmAddress() async {
     emit(ConfirmAddressLoading());
-    Future.delayed(
-      const Duration(seconds: 1),
-      () {
-        var chosenAddress = dummyLocations
-            .firstWhere((location) => location.id == selectedLocationId);
-        var previousAddress = dummyLocations.firstWhere(
-          (location) => location.isChosen == true,
-          orElse: () => dummyLocations.first,
-        );
-        previousAddress = previousAddress.copyWith(isChosen: false);
-        chosenAddress = chosenAddress.copyWith(isChosen: true);
-        final previousIndex = dummyLocations
-            .indexWhere((location) => location.id == previousAddress.id);
-        final chosenIndex = dummyLocations
-            .indexWhere((location) => location.id == chosenAddress.id);
-        dummyLocations[previousIndex] = previousAddress;
-        dummyLocations[chosenIndex] = chosenAddress;
-        emit(ConfirmAddressLoaded());
-      },
-    );
+    try {
+      final currentUser = authServices.currentUser();
+      var previousChosenLocations =
+          await locationServices.fetchLocations(currentUser!.uid, true);
+      if (previousChosenLocations.isNotEmpty) {
+        var previousLocation = previousChosenLocations.first;
+        previousLocation = previousLocation.copyWith(isChosen: false);
+        await locationServices.setLocation(previousLocation, currentUser.uid);
+        await locationServices.setLocation(previousLocation, currentUser.uid);
+      }
+      selectedLocation = selectedLocation!.copyWith(isChosen: true);
+      await locationServices.setLocation(selectedLocation!, currentUser.uid);
+      emit(ConfirmAddressLoaded());
+    } catch (e) {
+      emit(ConfirmAddressFailure(e.toString()));
+    }
   }
 }
