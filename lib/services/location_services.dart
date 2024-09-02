@@ -18,8 +18,9 @@ class LocationServicesImpl implements LocationServices {
       );
 
   @override
-  Future<List<LocationItemModel>> fetchLocations(String userId) {
-    // TODO: implement fetchLocations
-    throw UnimplementedError();
-  }
+  Future<List<LocationItemModel>> fetchLocations(String userId) async =>
+      await firestoreServices.getCollection(
+        path: ApiPaths.locations(userId),
+        builder: (data, documentId) => LocationItemModel.fromMap(data),
+      );
 }
