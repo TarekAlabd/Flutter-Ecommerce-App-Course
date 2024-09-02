@@ -13,14 +13,15 @@ class ChooseLocationCubit extends Cubit<ChooseLocationState> {
 
   String selectedLocationId = dummyLocations.first.id;
 
-  void fetchLocations() {
+  Future<void> fetchLocations() async {
     emit(FetchingLocations());
-    Future.delayed(
-      const Duration(seconds: 1),
-      () {
-        emit(FetchedLocations(dummyLocations));
-      },
-    );
+    try {
+      final currentUser = authServices.currentUser();
+      final locations = await locationServices.fetchLocations(currentUser!.uid);
+      emit(FetchedLocations(locations));
+    } catch (e) {
+      emit(FetchLocationsFailure(e.toString()));
+    }
   }
 
   Future<void> addLocation(String location) async {
@@ -35,7 +36,8 @@ class ChooseLocationCubit extends Cubit<ChooseLocationState> {
       final currentUser = authServices.currentUser();
       await locationServices.addLocation(locationItem, currentUser!.uid);
       emit(LocationAdded());
-      emit(FetchedLocations(dummyLocations));
+      final locations = await locationServices.fetchLocations(currentUser.uid);
+      emit(FetchedLocations(locations));
     } catch (e) {
       emit(LocationAddingFailure(e.toString()));
     }
