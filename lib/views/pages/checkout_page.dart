@@ -10,6 +10,7 @@ import 'package:flutter_ecommerce_app/view_models/add_new_card_cubit/payment_met
 import 'package:flutter_ecommerce_app/view_models/checkout_cubit/checkout_cubit.dart';
 import 'package:flutter_ecommerce_app/views/widgets/checkout_headlines_item.dart';
 import 'package:flutter_ecommerce_app/views/widgets/empty_shipping_payment.dart';
+import 'package:flutter_ecommerce_app/views/widgets/label_with_value_row.dart';
 import 'package:flutter_ecommerce_app/views/widgets/payment_method_bottom_sheet.dart';
 import 'package:flutter_ecommerce_app/views/widgets/payment_method_item.dart';
 
@@ -42,7 +43,7 @@ class CheckoutPage extends StatelessWidget {
               );
             },
           ).then((value) async {
-            await checkoutCubit.getCartItems();
+            await checkoutCubit.getCheckoutContent();
           });
         },
       );
@@ -101,7 +102,7 @@ class CheckoutPage extends StatelessWidget {
         BlocProvider(
           create: (context) {
             final cubit = CheckoutCubit();
-            cubit.getCartItems();
+            cubit.getCheckoutContent();
             return cubit;
           },
         ),
@@ -150,7 +151,8 @@ class CheckoutPage extends StatelessWidget {
                             Navigator.of(context)
                                 .pushNamed(AppRoutes.chooseLocation)
                                 .then(
-                                  (value) async => await cubit.getCartItems(),
+                                  (value) async =>
+                                      await cubit.getCheckoutContent(),
                                 );
                           },
                         ),
@@ -233,6 +235,26 @@ class CheckoutPage extends StatelessWidget {
                                           ),
                                         ],
                                       ),
+                                      Text.rich(
+                                        TextSpan(
+                                          text: 'Quantity: ',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .titleMedium!
+                                              .copyWith(
+                                                color: AppColors.grey,
+                                              ),
+                                          children: [
+                                            TextSpan(
+                                              text:
+                                                  cartItem.quantity.toString(),
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .titleMedium,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
                                     ],
                                   ),
                                 ),
@@ -249,23 +271,19 @@ class CheckoutPage extends StatelessWidget {
                           color: AppColors.grey2,
                         ),
                         const SizedBox(height: 16.0),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              'Total Amount',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .titleMedium!
-                                  .copyWith(
-                                    color: AppColors.grey,
-                                  ),
-                            ),
-                            Text(
-                              '\$${state.totalAmount.toStringAsFixed(1)}',
-                              style: Theme.of(context).textTheme.titleMedium,
-                            ),
-                          ],
+                        LabelWithValueRow(
+                          label: 'Subtotal',
+                          value: '\$${state.subtotal.toStringAsFixed(1)}',
+                        ),
+                        const SizedBox(height: 12),
+                        LabelWithValueRow(
+                          label: 'Shipping',
+                          value: '\$${state.shippingValue.toStringAsFixed(1)}',
+                        ),
+                        const SizedBox(height: 12),
+                        LabelWithValueRow(
+                          label: 'Total Amount',
+                          value: '\$${state.totalAmount.toStringAsFixed(1)}',
                         ),
                         const SizedBox(height: 40.0),
                         SizedBox(
