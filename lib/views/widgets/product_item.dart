@@ -18,7 +18,7 @@ class ProductItem extends StatelessWidget {
         Stack(
           children: [
             Container(
-              height: 130,
+              height: 110,
               width: 200,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(16.0),

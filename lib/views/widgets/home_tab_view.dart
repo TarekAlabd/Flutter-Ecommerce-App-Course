@@ -13,7 +13,10 @@ class HomeTabView extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<HomeCubit, HomeState>(
       bloc: BlocProvider.of<HomeCubit>(context),
-      buildWhen: (previous, current) => current is HomeLoaded || current is HomeLoading || current is HomeError,
+      buildWhen: (previous, current) =>
+          current is HomeLoaded ||
+          current is HomeLoading ||
+          current is HomeError,
       builder: (context, state) {
         if (state is HomeLoading) {
           return const Center(
@@ -77,7 +80,7 @@ class HomeTabView extends StatelessWidget {
                   physics: const NeverScrollableScrollPhysics(),
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
-                    mainAxisSpacing: 25,
+                    mainAxisSpacing: 30,
                     crossAxisSpacing: 10,
                   ),
                   itemBuilder: (context, index) {
