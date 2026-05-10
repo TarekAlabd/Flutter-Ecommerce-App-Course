@@ -39,6 +39,5 @@ class FavoriteCubit extends Cubit<FavoriteState> {
     } catch (e) {
       emit(FavoriteRemoveError(e.toString()));
     }
-  
   }
 }

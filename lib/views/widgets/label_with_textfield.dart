@@ -44,11 +44,11 @@ class _LabelWithTextFieldState extends State<LabelWithTextField> {
           obscureText: widget.obsecureText,
           decoration: InputDecoration(
             prefixIcon: Icon(widget.prefixIcon),
-            prefixIconColor: AppColors.grey,
+            prefixIconColor: Theme.of(context).colorScheme.onSurfaceVariant,
             suffixIcon: widget.suffixIcon,
-            suffixIconColor: AppColors.grey,
+            suffixIconColor: Theme.of(context).colorScheme.onSurfaceVariant,
             hintText: widget.hintText,
-            fillColor: AppColors.grey1,
+            fillColor: Theme.of(context).colorScheme.surfaceContainerLow,
             filled: true,
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(16),

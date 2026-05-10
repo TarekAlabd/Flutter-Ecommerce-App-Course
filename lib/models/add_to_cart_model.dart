@@ -31,12 +31,12 @@ class AddToCartModel {
 
   Map<String, dynamic> toMap() {
     final result = <String, dynamic>{};
-  
+
     result.addAll({'id': id});
     result.addAll({'product': product.toMap()});
-    result.addAll({'size': size.name});
+    result.addAll({'size': size.name.toUpperCase()});
     result.addAll({'quantity': quantity});
-  
+
     return result;
   }
 

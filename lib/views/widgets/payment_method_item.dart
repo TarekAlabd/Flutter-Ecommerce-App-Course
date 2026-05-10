@@ -1,7 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ecommerce_app/models/payment_card_model.dart';
-import 'package:flutter_ecommerce_app/utils/app_colors.dart';
 
 class PaymentMethodItem extends StatelessWidget {
   final PaymentCardModel paymentCard;
@@ -19,9 +18,9 @@ class PaymentMethodItem extends StatelessWidget {
       child: DecoratedBox(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(16),
-          color: AppColors.white,
+          color: Theme.of(context).colorScheme.surface,
           border: Border.all(
-            color: AppColors.grey3,
+            color: Theme.of(context).colorScheme.surfaceContainerHigh,
           ),
         ),
         child: ListTile(

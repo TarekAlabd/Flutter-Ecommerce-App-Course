@@ -45,11 +45,11 @@ Key constraints that must NEVER be violated:
 
 **Purpose**: Add the new dependency before any code is written.
 
-- [ ] T001 Add `shared_preferences: ^2.5.5` under `dependencies` in `pubspec.yaml`
+- [X] T001 Add `shared_preferences: ^2.5.5` under `dependencies` in `pubspec.yaml`
   - Open `pubspec.yaml` and add `shared_preferences: ^2.5.5` in the `dependencies` block, below the existing `flutter_bloc` entry.
   - Do NOT change any other dependency versions.
 
-- [ ] T002 Run `flutter pub get` from the project root to install `shared_preferences`
+- [X] T002 Run `flutter pub get` from the project root to install `shared_preferences`
   - Execute: `flutter pub get`
   - Verify the command succeeds with no errors before continuing.
 
@@ -63,7 +63,7 @@ Key constraints that must NEVER be violated:
 
 > All four tasks below are creating NEW files in different directories and can be done in parallel.
 
-- [ ] T003 [P] Create `lib/models/theme_preference.dart` — immutable `ThemePreference` model
+- [X] T003 [P] Create `lib/models/theme_preference.dart` — immutable `ThemePreference` model
   - Exact implementation required:
     ```dart
     class ThemePreference {
@@ -81,7 +81,7 @@ Key constraints that must NEVER be violated:
     ```
   - All fields must be `final`. No mutations allowed.
 
-- [ ] T004 [P] Create `lib/services/theme_services.dart` — abstract `ThemeServices` + `ThemeServicesImpl`
+- [X] T004 [P] Create `lib/services/theme_services.dart` — abstract `ThemeServices` + `ThemeServicesImpl`
   - Exact implementation required:
     ```dart
     import 'package:shared_preferences/shared_preferences.dart';
@@ -102,7 +102,7 @@ Key constraints that must NEVER be violated:
     ```
   - Reading from SharedPreferences is intentionally NOT in the service (done once in `main()` before `runApp()` to avoid flash of wrong theme).
 
-- [ ] T005 [P] Create `lib/view_models/theme_cubit/theme_state.dart` — sealed `ThemeState` hierarchy
+- [X] T005 [P] Create `lib/view_models/theme_cubit/theme_state.dart` — sealed `ThemeState` hierarchy
   - Create the directory `lib/view_models/theme_cubit/` if it does not exist.
   - Exact implementation required:
     ```dart
@@ -119,7 +119,7 @@ Key constraints that must NEVER be violated:
     ```
   - Use `part of 'theme_cubit.dart'` at the top (matches the existing cubit pattern in this project — e.g., see `lib/view_models/auth_cubit/auth_state.dart` for reference).
 
-- [ ] T006 [P] Create `lib/view_models/theme_cubit/theme_cubit.dart` — `ThemeCubit` with `toggleTheme()`
+- [X] T006 [P] Create `lib/view_models/theme_cubit/theme_cubit.dart` — `ThemeCubit` with `toggleTheme()`
   - Exact implementation required:
     ```dart
     import 'package:flutter/material.dart';
@@ -159,7 +159,7 @@ Key constraints that must NEVER be violated:
 
 ### Tests for User Story 1 (Write FIRST — ensure they FAIL before implementing)
 
-- [ ] T007 [P] [US1] Write unit tests for `ThemePreference` model in `test/models/theme_preference_test.dart`
+- [X] T007 [P] [US1] Write unit tests for `ThemePreference` model in `test/models/theme_preference_test.dart`
   - Create directory `test/models/` if it does not exist.
   - Test cases to include:
     1. `ThemePreference.fromMap({'isDarkMode': true})` produces `isDarkMode == true`
@@ -170,7 +170,7 @@ Key constraints that must NEVER be violated:
     6. Original instance is NOT mutated by `copyWith` (immutability)
   - Run `flutter test test/models/theme_preference_test.dart` and confirm it FAILS (class doesn't exist yet or tests fail).
 
-- [ ] T008 [P] [US1] Write unit tests for `ThemeCubit` in `test/view_models/theme_cubit/theme_cubit_test.dart`
+- [X] T008 [P] [US1] Write unit tests for `ThemeCubit` in `test/view_models/theme_cubit/theme_cubit_test.dart`
   - Create directory `test/view_models/theme_cubit/` if it does not exist.
   - Use `bloc_test` package (already a transitive dependency via `flutter_bloc`).
   - **DO NOT use `mocktail` or `mockito`** — Constitution IV requires cubits to be tested with real or fake service implementations, never with mocks that bypass the service contract. Instead, define a `FakeThemeServices` class at the top of the test file:
@@ -190,7 +190,7 @@ Key constraints that must NEVER be violated:
     4. `toggleTheme()` when dark mode → emits `ThemeLoaded(ThemeMode.light)` and `fakeThemeServices.savedValue == false`
     5. Rapid successive `toggleTheme()` calls → final state reflects the last toggle
 
-- [ ] T009 [P] [US1] Write widget tests for `DarkModeToggleRow` in `test/views/widgets/dark_mode_toggle_row_test.dart`
+- [X] T009 [P] [US1] Write widget tests for `DarkModeToggleRow` in `test/views/widgets/dark_mode_toggle_row_test.dart`
   - Create directory `test/views/widgets/` if it does not exist.
   - Test cases to include:
     1. Widget renders a `Switch` widget
@@ -202,7 +202,7 @@ Key constraints that must NEVER be violated:
 
 ### Implementation for User Story 1
 
-- [ ] T010 [P] [US1] Create `lib/views/widgets/dark_mode_toggle_row.dart` — the toggle row widget
+- [X] T010 [P] [US1] Create `lib/views/widgets/dark_mode_toggle_row.dart` — the toggle row widget
   - This is a stateless widget that accepts the current theme state from `BlocBuilder<ThemeCubit, ThemeState>` and calls `context.read<ThemeCubit>().toggleTheme()` on toggle.
   - Exact implementation required:
     ```dart
@@ -242,7 +242,7 @@ Key constraints that must NEVER be violated:
     }
     ```
 
-- [ ] T011 [US1] Modify `lib/main.dart` to integrate `ThemeCubit` into the app
+- [X] T011 [US1] Modify `lib/main.dart` to integrate `ThemeCubit` into the app
   - This task has two sub-changes in `main.dart`:
 
   **Sub-change A — `main()` function**: Make `main()` async, read `SharedPreferences` before `runApp()`, and pass `prefs` + `initialIsDark` to `MyApp`:
@@ -327,7 +327,7 @@ Key constraints that must NEVER be violated:
     - `import 'services/theme_services.dart';`
     - `import 'view_models/theme_cubit/theme_cubit.dart';`
 
-- [ ] T012 [US1] Modify `lib/views/pages/profile_page.dart` to add `DarkModeToggleRow` above the logout button
+- [X] T012 [US1] Modify `lib/views/pages/profile_page.dart` to add `DarkModeToggleRow` above the logout button
   - Import the widget: `import '../widgets/dark_mode_toggle_row.dart';`
   - Locate the logout button widget in the file. Add `const DarkModeToggleRow()` as a widget immediately above it, with consistent padding/spacing matching the surrounding layout.
   - Do NOT change any other part of the profile page.
@@ -348,7 +348,7 @@ Key constraints that must NEVER be violated:
 
 ### Tests for User Story 2 (Write FIRST — ensure they FAIL before implementing)
 
-- [ ] T013 [P] [US2] Write unit tests for `ThemeServicesImpl` in `test/services/theme_services_test.dart`
+- [X] T013 [P] [US2] Write unit tests for `ThemeServicesImpl` in `test/services/theme_services_test.dart`
   - Create directory `test/services/` if it does not exist.
   - Use `shared_preferences` test fakes: call `SharedPreferences.setMockInitialValues({})` in `setUp`.
   - Test cases to include:
@@ -358,7 +358,7 @@ Key constraints that must NEVER be violated:
     4. After `saveIsDarkMode(false)`, reading `prefs.getBool('dark_mode_enabled')` returns `false`
     5. `ThemeServicesImpl` only writes to SharedPreferences and makes zero network calls
 
-- [ ] T014 [P] [US2] Write widget/integration test for the no-flash startup pattern in `test/views/pages/profile_page_dark_mode_test.dart`
+- [X] T014 [P] [US2] Write widget/integration test for the no-flash startup pattern in `test/views/pages/profile_page_dark_mode_test.dart`
   - Test cases to include:
     1. When `SharedPreferences` has `dark_mode_enabled = true`, `ThemeCubit` initial state is `ThemeLoaded(ThemeMode.dark)` — no intermediate light state is emitted
     2. When `SharedPreferences` has `dark_mode_enabled = false` (or key missing), `ThemeCubit` initial state is `ThemeLoaded(ThemeMode.light)`
@@ -369,20 +369,20 @@ Key constraints that must NEVER be violated:
 
 > The core persistence implementation was already done in T004 (`ThemeServicesImpl.saveIsDarkMode`) and T011 (`main()` reads prefs before `runApp()`). These tasks verify and ensure correctness.
 
-- [ ] T015 [US2] Ensure `lib/main.dart` no-flash pattern is correct
+- [X] T015 [US2] Ensure `lib/main.dart` no-flash pattern is correct
   - If T011 was fully implemented, this task requires NO code changes — it is a mandatory verification checkpoint before proceeding to Phase 5.
   - Confirm that `main()` is `async` and calls `await SharedPreferences.getInstance()` BEFORE `runApp()`.
   - Confirm that `initialIsDark` is passed as a constructor argument to `MyApp` and ultimately to `ThemeCubit(initialIsDark: initialIsDark)`.
   - Confirm that `ThemeCubit` constructor uses `initialIsDark` to set `super(ThemeLoaded(...))` — NOT a loading state.
   - If any of the above is missing from T011, add the missing piece now (treated as a T011 continuation, not a new design decision).
 
-- [ ] T016 [US2] Ensure edge case: corrupted or missing SharedPreferences value defaults to light mode
+- [X] T016 [US2] Ensure edge case: corrupted or missing SharedPreferences value defaults to light mode
   - If T011 was fully implemented, this task requires NO code changes — it is a mandatory verification checkpoint.
   - In `lib/main.dart`, confirm the read uses the null-safe default: `prefs.getBool('dark_mode_enabled') ?? false`
   - The `?? false` ensures fresh installs (or cleared app data) start in light mode (FR-006).
   - If this default is missing, add it now (treated as a T011 continuation).
 
-- [ ] T017 [US2] Run `flutter test test/services/ test/views/pages/profile_page_dark_mode_test.dart` and fix any failures
+- [X] T017 [US2] Run `flutter test test/services/ test/views/pages/profile_page_dark_mode_test.dart` and fix any failures
   - All 8 tests from T013 and T014 must pass.
   - If tests fail due to implementation issues (not test issues), fix the implementation.
 
@@ -404,14 +404,14 @@ Key constraints that must NEVER be violated:
 
 ### Test for User Story 3 (Write FIRST)
 
-- [ ] T018 [P] [US3] Write widget test verifying dark background on `home_page` with FR-009/FR-010 assertions in `test/views/pages/home_page_dark_test.dart`
+- [X] T018 [P] [US3] Write widget test verifying dark background on `home_page` with FR-009/FR-010 assertions in `test/views/pages/home_page_dark_test.dart`
   - Wrap `HomePage` in a `BlocProvider<ThemeCubit>` with `initialIsDark: true` and a `MaterialApp` configured with `darkTheme` and `themeMode: ThemeMode.dark`.
   - Verify there are NO `Scaffold` widgets with `backgroundColor: Colors.white` or literal white backgrounds.
   - Verify `Theme.of(context).brightness == Brightness.dark`.
   - **FR-009**: Find any `Image` or `CachedNetworkImage` widgets in the tree and assert they have no `color` filter and `colorBlendMode` is null — images must not be tinted or filtered by the theme change.
   - **FR-010**: Assert `Theme.of(context).colorScheme.primary` is not `Colors.black` and not `Colors.white` — the brand deep-purple must remain recognizable in dark mode.
 
-- [ ] T046 [P] [US3] Write widget dark mode tests for login, cart, profile, and product-details pages (SC-003 coverage)
+- [X] T046 [P] [US3] Write widget dark mode tests for login, cart, profile, and product-details pages (SC-003 coverage)
   - **SC-003 requires 100% of app screens to render correctly in dark mode.** T018 covers home_page. This task covers the next four highest-risk screens.
   - For each screen below, create a test file using the same harness as T018 (BlocProvider<ThemeCubit> + MaterialApp with darkTheme/ThemeMode.dark) and assert `Theme.of(context).brightness == Brightness.dark` with no white/light scaffold backgrounds:
     1. `test/views/pages/login_page_dark_test.dart` — `LoginPage`
@@ -426,72 +426,72 @@ Key constraints that must NEVER be violated:
 
 **Utils and Models**
 
-- [ ] T019 [P] [US3] Update `lib/utils/app_colors.dart` — document theme-independent constants
+- [X] T019 [P] [US3] Update `lib/utils/app_colors.dart` — document theme-independent constants
   - Review all color constants in this file.
   - Add a comment `// theme-independent` next to colors that should NOT be replaced by theme references (green for success, red for error, blue for links, deepPurple as brand primary).
   - If `AppColors.white` or `AppColors.black` are used by any page/widget, mark them as deprecated with a comment: `// deprecated: use Theme.of(context).colorScheme.surface instead`.
   - Do NOT remove any constants — only add documentation comments.
 
-- [ ] T020 [P] [US3] Audit `lib/models/category_model.dart` for hardcoded `Colors.*`
+- [X] T020 [P] [US3] Audit `lib/models/category_model.dart` for hardcoded `Colors.*`
   - Run `grep "Colors\." lib/models/category_model.dart` to check for any color usages.
   - **If the grep returns zero results**: this file needs no changes — mark T020 complete with no edits.
   - **If `Colors.*` references are found**: models must not contain UI/widget color logic (Constitution III). For each occurrence: if the color is used as a display property (background, text color), move it to the widget that renders it and pass it as a constructor parameter to the model if truly needed; do NOT call `Theme.of(context)` inside a model class. After any changes, run `flutter analyze lib/models/category_model.dart` — must report 0 errors.
 
 **Pages (10 files)**
 
-- [ ] T021 [P] [US3] Migrate `lib/views/pages/home_page.dart` — replace hardcoded `Colors.*` with `Theme.of(context).colorScheme.*`
+- [X] T021 [P] [US3] Migrate `lib/views/pages/home_page.dart` — replace hardcoded `Colors.*` with `Theme.of(context).colorScheme.*`
   - Run `grep -n "Colors\." lib/views/pages/home_page.dart` to identify all usages.
   - Apply the Color Migration Reference table for each occurrence.
   - Remove any explicit `scaffoldBackgroundColor: Colors.white` — let `ThemeData` manage it.
   - After migration, run `flutter analyze lib/views/pages/home_page.dart` — must report 0 errors.
 
-- [ ] T022 [P] [US3] Migrate `lib/views/pages/cart_page.dart` — replace hardcoded `Colors.*` with `Theme.of(context).colorScheme.*`
+- [X] T022 [P] [US3] Migrate `lib/views/pages/cart_page.dart` — replace hardcoded `Colors.*` with `Theme.of(context).colorScheme.*`
   - Run `grep -n "Colors\." lib/views/pages/cart_page.dart` to identify all usages.
   - Apply the Color Migration Reference table for each occurrence.
   - After migration, run `flutter analyze lib/views/pages/cart_page.dart` — must report 0 errors.
 
-- [ ] T023 [P] [US3] Migrate `lib/views/pages/favorites_page.dart` — replace hardcoded `Colors.*` with `Theme.of(context).colorScheme.*`
+- [X] T023 [P] [US3] Migrate `lib/views/pages/favorites_page.dart` — replace hardcoded `Colors.*` with `Theme.of(context).colorScheme.*`
   - Run `grep -n "Colors\." lib/views/pages/favorites_page.dart` to identify all usages.
   - Apply the Color Migration Reference table for each occurrence.
   - After migration, run `flutter analyze lib/views/pages/favorites_page.dart` — must report 0 errors.
 
-- [ ] T024 [P] [US3] Migrate `lib/views/pages/product_details_page.dart` — replace hardcoded `Colors.*` with `Theme.of(context).colorScheme.*`
+- [X] T024 [P] [US3] Migrate `lib/views/pages/product_details_page.dart` — replace hardcoded `Colors.*` with `Theme.of(context).colorScheme.*`
   - Run `grep -n "Colors\." lib/views/pages/product_details_page.dart` to identify all usages.
   - Apply the Color Migration Reference table for each occurrence.
   - After migration, run `flutter analyze lib/views/pages/product_details_page.dart` — must report 0 errors.
 
-- [ ] T025 [P] [US3] Migrate `lib/views/pages/checkout_page.dart` — replace hardcoded `Colors.*` with `Theme.of(context).colorScheme.*`
+- [X] T025 [P] [US3] Migrate `lib/views/pages/checkout_page.dart` — replace hardcoded `Colors.*` with `Theme.of(context).colorScheme.*`
   - Run `grep -n "Colors\." lib/views/pages/checkout_page.dart` to identify all usages.
   - Apply the Color Migration Reference table for each occurrence.
   - After migration, run `flutter analyze lib/views/pages/checkout_page.dart` — must report 0 errors.
 
-- [ ] T026 [P] [US3] Migrate `lib/views/pages/choose_location_page.dart` — replace hardcoded `Colors.*` with `Theme.of(context).colorScheme.*`
+- [X] T026 [P] [US3] Migrate `lib/views/pages/choose_location_page.dart` — replace hardcoded `Colors.*` with `Theme.of(context).colorScheme.*`
   - Run `grep -n "Colors\." lib/views/pages/choose_location_page.dart` to identify all usages.
   - Apply the Color Migration Reference table for each occurrence.
   - After migration, run `flutter analyze lib/views/pages/choose_location_page.dart` — must report 0 errors.
 
-- [ ] T027 [P] [US3] Migrate `lib/views/pages/add_new_card_page.dart` — replace hardcoded `Colors.*` with `Theme.of(context).colorScheme.*`
+- [X] T027 [P] [US3] Migrate `lib/views/pages/add_new_card_page.dart` — replace hardcoded `Colors.*` with `Theme.of(context).colorScheme.*`
   - Run `grep -n "Colors\." lib/views/pages/add_new_card_page.dart` to identify all usages.
   - Apply the Color Migration Reference table for each occurrence.
   - After migration, run `flutter analyze lib/views/pages/add_new_card_page.dart` — must report 0 errors.
 
-- [ ] T028 [P] [US3] Migrate `lib/views/pages/login_page.dart` — replace hardcoded `Colors.*` with `Theme.of(context).colorScheme.*`
+- [X] T028 [P] [US3] Migrate `lib/views/pages/login_page.dart` — replace hardcoded `Colors.*` with `Theme.of(context).colorScheme.*`
   - Run `grep -n "Colors\." lib/views/pages/login_page.dart` to identify all usages.
   - Apply the Color Migration Reference table for each occurrence.
   - After migration, run `flutter analyze lib/views/pages/login_page.dart` — must report 0 errors.
 
-- [ ] T029 [P] [US3] Migrate `lib/views/pages/register_page.dart` — replace hardcoded `Colors.*` with `Theme.of(context).colorScheme.*`
+- [X] T029 [P] [US3] Migrate `lib/views/pages/register_page.dart` — replace hardcoded `Colors.*` with `Theme.of(context).colorScheme.*`
   - Run `grep -n "Colors\." lib/views/pages/register_page.dart` to identify all usages.
   - Apply the Color Migration Reference table for each occurrence.
   - After migration, run `flutter analyze lib/views/pages/register_page.dart` — must report 0 errors.
 
-- [ ] T030 [P] [US3] Migrate `lib/views/pages/custom_bottom_navbar.dart` — replace hardcoded `Colors.*` with `Theme.of(context).colorScheme.*`
+- [X] T030 [P] [US3] Migrate `lib/views/pages/custom_bottom_navbar.dart` — replace hardcoded `Colors.*` with `Theme.of(context).colorScheme.*`
   - Run `grep -n "Colors\." lib/views/pages/custom_bottom_navbar.dart` to identify all usages.
   - Pay special attention to icon colors and background of the bottom navigation bar — they must adapt to dark mode.
   - Apply the Color Migration Reference table for each occurrence.
   - After migration, run `flutter analyze lib/views/pages/custom_bottom_navbar.dart` — must report 0 errors.
 
-- [ ] T047 [P] [US3] Migrate `lib/views/pages/profile_page.dart` — replace hardcoded `Colors.*` with `Theme.of(context).colorScheme.*`
+- [X] T047 [P] [US3] Migrate `lib/views/pages/profile_page.dart` — replace hardcoded `Colors.*` with `Theme.of(context).colorScheme.*`
   - T012 adds the `DarkModeToggleRow` widget to this page. This task handles the page's existing hardcoded color references independently.
   - Run `grep -n "Colors\." lib/views/pages/profile_page.dart` to identify all usages.
   - Apply the Color Migration Reference table for each occurrence.
@@ -500,63 +500,63 @@ Key constraints that must NEVER be violated:
 
 **Widgets (12 files)**
 
-- [ ] T031 [P] [US3] Migrate `lib/views/widgets/cart_item_widget.dart` — replace hardcoded `Colors.*` with `Theme.of(context).colorScheme.*`
+- [X] T031 [P] [US3] Migrate `lib/views/widgets/cart_item_widget.dart` — replace hardcoded `Colors.*` with `Theme.of(context).colorScheme.*`
   - Run `grep -n "Colors\." lib/views/widgets/cart_item_widget.dart` to identify all usages.
   - Apply the Color Migration Reference table for each occurrence.
   - After migration, run `flutter analyze lib/views/widgets/cart_item_widget.dart` — must report 0 errors.
 
-- [ ] T032 [P] [US3] Migrate `lib/views/widgets/product_item.dart` — replace hardcoded `Colors.*` with `Theme.of(context).colorScheme.*`
+- [X] T032 [P] [US3] Migrate `lib/views/widgets/product_item.dart` — replace hardcoded `Colors.*` with `Theme.of(context).colorScheme.*`
   - Run `grep -n "Colors\." lib/views/widgets/product_item.dart` to identify all usages.
   - Apply the Color Migration Reference table for each occurrence.
   - After migration, run `flutter analyze lib/views/widgets/product_item.dart` — must report 0 errors.
 
-- [ ] T033 [P] [US3] Migrate `lib/views/widgets/main_button.dart` — replace hardcoded `Colors.*` with `Theme.of(context).colorScheme.*`
+- [X] T033 [P] [US3] Migrate `lib/views/widgets/main_button.dart` — replace hardcoded `Colors.*` with `Theme.of(context).colorScheme.*`
   - Run `grep -n "Colors\." lib/views/widgets/main_button.dart` to identify all usages.
   - The primary button color (`Colors.deepPurple`) should become `Theme.of(context).colorScheme.primary`.
   - Apply the Color Migration Reference table for each occurrence.
   - After migration, run `flutter analyze lib/views/widgets/main_button.dart` — must report 0 errors.
 
-- [ ] T034 [P] [US3] Migrate `lib/views/widgets/home_tab_view.dart` — replace hardcoded `Colors.*` with `Theme.of(context).colorScheme.*`
+- [X] T034 [P] [US3] Migrate `lib/views/widgets/home_tab_view.dart` — replace hardcoded `Colors.*` with `Theme.of(context).colorScheme.*`
   - Run `grep -n "Colors\." lib/views/widgets/home_tab_view.dart` to identify all usages.
   - Apply the Color Migration Reference table for each occurrence.
   - After migration, run `flutter analyze lib/views/widgets/home_tab_view.dart` — must report 0 errors.
 
-- [ ] T035 [P] [US3] Migrate `lib/views/widgets/social_media_button.dart` — replace hardcoded `Colors.*` with `Theme.of(context).colorScheme.*`
+- [X] T035 [P] [US3] Migrate `lib/views/widgets/social_media_button.dart` — replace hardcoded `Colors.*` with `Theme.of(context).colorScheme.*`
   - Run `grep -n "Colors\." lib/views/widgets/social_media_button.dart` to identify all usages.
   - Apply the Color Migration Reference table for each occurrence.
   - After migration, run `flutter analyze lib/views/widgets/social_media_button.dart` — must report 0 errors.
 
-- [ ] T036 [P] [US3] Migrate `lib/views/widgets/empty_shipping_payment.dart` — replace hardcoded `Colors.*` with `Theme.of(context).colorScheme.*`
+- [X] T036 [P] [US3] Migrate `lib/views/widgets/empty_shipping_payment.dart` — replace hardcoded `Colors.*` with `Theme.of(context).colorScheme.*`
   - Run `grep -n "Colors\." lib/views/widgets/empty_shipping_payment.dart` to identify all usages.
   - Apply the Color Migration Reference table for each occurrence.
   - After migration, run `flutter analyze lib/views/widgets/empty_shipping_payment.dart` — must report 0 errors.
 
-- [ ] T037 [P] [US3] Migrate `lib/views/widgets/payment_method_item.dart` — replace hardcoded `Colors.*` with `Theme.of(context).colorScheme.*`
+- [X] T037 [P] [US3] Migrate `lib/views/widgets/payment_method_item.dart` — replace hardcoded `Colors.*` with `Theme.of(context).colorScheme.*`
   - Run `grep -n "Colors\." lib/views/widgets/payment_method_item.dart` to identify all usages.
   - Apply the Color Migration Reference table for each occurrence.
   - After migration, run `flutter analyze lib/views/widgets/payment_method_item.dart` — must report 0 errors.
 
-- [ ] T038 [P] [US3] Migrate `lib/views/widgets/label_with_value_row.dart` — replace hardcoded `Colors.*` with `Theme.of(context).colorScheme.*`
+- [X] T038 [P] [US3] Migrate `lib/views/widgets/label_with_value_row.dart` — replace hardcoded `Colors.*` with `Theme.of(context).colorScheme.*`
   - Run `grep -n "Colors\." lib/views/widgets/label_with_value_row.dart` to identify all usages.
   - Apply the Color Migration Reference table for each occurrence.
   - After migration, run `flutter analyze lib/views/widgets/label_with_value_row.dart` — must report 0 errors.
 
-- [ ] T039 [P] [US3] Migrate `lib/views/widgets/payment_method_bottom_sheet.dart` — replace hardcoded `Colors.*` with `Theme.of(context).colorScheme.*`
+- [X] T039 [P] [US3] Migrate `lib/views/widgets/payment_method_bottom_sheet.dart` — replace hardcoded `Colors.*` with `Theme.of(context).colorScheme.*`
   - Run `grep -n "Colors\." lib/views/widgets/payment_method_bottom_sheet.dart` to identify all usages.
   - Apply the Color Migration Reference table for each occurrence.
   - After migration, run `flutter analyze lib/views/widgets/payment_method_bottom_sheet.dart` — must report 0 errors.
 
-- [ ] T040 [P] [US3] Migrate `lib/views/widgets/counter_widget.dart` — replace hardcoded `Colors.*` with `Theme.of(context).colorScheme.*`
+- [X] T040 [P] [US3] Migrate `lib/views/widgets/counter_widget.dart` — replace hardcoded `Colors.*` with `Theme.of(context).colorScheme.*`
   - Run `grep -n "Colors\." lib/views/widgets/counter_widget.dart` to identify all usages.
   - Apply the Color Migration Reference table for each occurrence.
   - After migration, run `flutter analyze lib/views/widgets/counter_widget.dart` — must report 0 errors.
 
-- [ ] T041 [P] [US3] Migrate `lib/views/widgets/label_with_textfield.dart` — replace hardcoded `Colors.*` with `Theme.of(context).colorScheme.*`
+- [X] T041 [P] [US3] Migrate `lib/views/widgets/label_with_textfield.dart` — replace hardcoded `Colors.*` with `Theme.of(context).colorScheme.*`
   - Run `grep -n "Colors\." lib/views/widgets/label_with_textfield.dart` to identify all usages.
   - Apply the Color Migration Reference table for each occurrence.
   - After migration, run `flutter analyze lib/views/widgets/label_with_textfield.dart` — must report 0 errors.
 
-- [ ] T042 [P] [US3] Migrate `lib/views/widgets/location_item_widget.dart` — replace hardcoded `Colors.*` with `Theme.of(context).colorScheme.*`
+- [X] T042 [P] [US3] Migrate `lib/views/widgets/location_item_widget.dart` — replace hardcoded `Colors.*` with `Theme.of(context).colorScheme.*`
   - Run `grep -n "Colors\." lib/views/widgets/location_item_widget.dart` to identify all usages.
   - Apply the Color Migration Reference table for each occurrence.
   - After migration, run `flutter analyze lib/views/widgets/location_item_widget.dart` — must report 0 errors.
@@ -571,12 +571,12 @@ Key constraints that must NEVER be violated:
 
 **Purpose**: Final verification, coverage check, and static analysis across all changes.
 
-- [ ] T043 Run `flutter analyze` from repo root and fix ALL warnings and errors
+- [X] T043 Run `flutter analyze` from repo root and fix ALL warnings and errors
   - Execute: `flutter analyze`
   - Zero issues must be reported before marking this complete.
   - Pay special attention to unused imports left over from color migration.
 
-- [ ] T044 Run `flutter test --coverage` and verify coverage meets the 80% minimum
+- [X] T044 Run `flutter test --coverage` and verify coverage meets the 80% minimum
   - Execute: `flutter test --coverage`
   - Check coverage for: `lib/models/theme_preference.dart`, `lib/services/theme_services.dart`, `lib/view_models/theme_cubit/theme_cubit.dart`, `lib/views/widgets/dark_mode_toggle_row.dart`
   - If coverage is below 80% for any of these files, add additional tests to bring it up.
@@ -590,6 +590,7 @@ Key constraints that must NEVER be violated:
     - Check at minimum: product card text on Home, input field labels on Login, body text on Profile
   - Report any failing contrast values as bugs to fix (adjust the dark `ColorScheme` seed or override specific colors in `ThemeData`).
   - All checklist items must pass. Report any failures before closing the feature.
+  - **Status 2026-05-10**: Not completed by automation. `flutter devices` confirmed available targets (iPad, iPhone simulator, macOS, Chrome), but the checklist requires an interactive app walk-through and visual contrast spot-checking. Follow-up: run this manually before closing the feature.
 
 ---
 

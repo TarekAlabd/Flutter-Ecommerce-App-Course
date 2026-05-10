@@ -1,9 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_ecommerce_app/utils/app_colors.dart';
-import 'package:flutter_ecommerce_app/view_models/favorite_cubit/favorite_cubit.dart';
 import 'package:flutter_ecommerce_app/views/pages/cart_page.dart';
 import 'package:flutter_ecommerce_app/views/pages/favorites_page.dart';
 import 'package:flutter_ecommerce_app/views/pages/home_page.dart';
@@ -91,7 +88,7 @@ class _CustomBottomNavbarState extends State<CustomBottomNavbar> {
             Text(
               'Let\'s go shopping!',
               style: Theme.of(context).textTheme.labelSmall!.copyWith(
-                    color: Colors.grey,
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
                   ),
             ),
           ],
@@ -141,7 +138,7 @@ class _CustomBottomNavbarState extends State<CustomBottomNavbar> {
             currentIndex = index;
           });
         },
-        backgroundColor: AppColors.white, // Default is Colors.white.
+        backgroundColor: Theme.of(context).colorScheme.surface,
         handleAndroidBackButtonPress: true, // Default is true.
         resizeToAvoidBottomInset:
             true, // This needs to be true if you want to move up the screen when keyboard appears. Default is true.

@@ -35,14 +35,14 @@ class PaymentCardModel {
 
   Map<String, dynamic> toMap() {
     final result = <String, dynamic>{};
-  
+
     result.addAll({'id': id});
     result.addAll({'cardNumber': cardNumber});
     result.addAll({'cardHolderName': cardHolderName});
     result.addAll({'expiryDate': expiryDate});
     result.addAll({'cvv': cvv});
     result.addAll({'isChosen': isChosen});
-  
+
     return result;
   }
 
@@ -59,35 +59,35 @@ class PaymentCardModel {
 }
 
 List<PaymentCardModel> dummyPaymentCards = [
-  PaymentCardModel(
+  const PaymentCardModel(
     id: '1',
     cardNumber: '1234 5678 9012 3456',
     cardHolderName: 'Tarek Alabd',
     expiryDate: '12/23',
     cvv: '123',
   ),
-  PaymentCardModel(
+  const PaymentCardModel(
     id: '2',
     cardNumber: '1234 5678 9012 3466',
     cardHolderName: 'John Doe',
     expiryDate: '12/23',
     cvv: '123',
   ),
-  PaymentCardModel(
+  const PaymentCardModel(
     id: '3',
     cardNumber: '1234 5678 9012 3477',
     cardHolderName: 'Tim Smith',
     expiryDate: '12/23',
     cvv: '123',
   ),
-  PaymentCardModel(
+  const PaymentCardModel(
     id: '4',
     cardNumber: '1234 5678 9012 3488',
     cardHolderName: 'John Doe',
     expiryDate: '12/23',
     cvv: '123',
   ),
-  PaymentCardModel(
+  const PaymentCardModel(
     id: '5',
     cardNumber: '1234 5678 9012 3499',
     cardHolderName: 'Tim Smith',

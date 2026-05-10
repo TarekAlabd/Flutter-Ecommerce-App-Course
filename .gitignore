@@ -3,7 +3,9 @@
 *.log
 *.pyc
 *.swp
+*.tmp
 .DS_Store
+Thumbs.db
 .atom/
 .build/
 .buildlog/

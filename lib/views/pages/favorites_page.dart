@@ -38,7 +38,7 @@ class FavoritesPage extends StatelessWidget {
                 return Divider(
                   indent: 20,
                   endIndent: 20,
-                  color: AppColors.grey2,
+                  color: Theme.of(context).colorScheme.surfaceContainerHighest,
                 );
               },
               itemBuilder: (context, index) {
@@ -52,7 +52,8 @@ class FavoritesPage extends StatelessWidget {
                   ),
                   trailing: BlocConsumer<FavoriteCubit, FavoriteState>(
                     bloc: favoriteCubit,
-                    listenWhen: (previous, current) => current is FavoriteRemoveError,
+                    listenWhen: (previous, current) =>
+                        current is FavoriteRemoveError,
                     listener: (context, state) {
                       if (state is FavoriteRemoveError) {
                         ScaffoldMessenger.of(context).showSnackBar(
@@ -60,7 +61,7 @@ class FavoritesPage extends StatelessWidget {
                             content: Text(state.error),
                           ),
                         );
-                      } 
+                      }
                     },
                     buildWhen: (previous, current) =>
                         (current is FavoriteRemoving &&

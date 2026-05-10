@@ -32,13 +32,13 @@ class LocationItemModel {
 
   Map<String, dynamic> toMap() {
     final result = <String, dynamic>{};
-  
+
     result.addAll({'id': id});
     result.addAll({'city': city});
     result.addAll({'country': country});
     result.addAll({'imgUrl': imgUrl});
     result.addAll({'isChosen': isChosen});
-  
+
     return result;
   }
 

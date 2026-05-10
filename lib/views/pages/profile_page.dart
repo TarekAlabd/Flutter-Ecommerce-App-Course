@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_ecommerce_app/utils/app_routes.dart';
 import 'package:flutter_ecommerce_app/view_models/auth_cubit/auth_cubit.dart';
+import 'package:flutter_ecommerce_app/views/widgets/dark_mode_toggle_row.dart';
 import 'package:flutter_ecommerce_app/views/widgets/main_button.dart';
 
 class ProfilePage extends StatelessWidget {
@@ -20,7 +21,8 @@ class ProfilePage extends StatelessWidget {
               current is AuthLoggedOut || current is AuthLogOutError,
           listener: (context, state) {
             if (state is AuthLoggedOut) {
-              Navigator.of(context, rootNavigator: true).pushNamedAndRemoveUntil(
+              Navigator.of(context, rootNavigator: true)
+                  .pushNamedAndRemoveUntil(
                 AppRoutes.loginRoute,
                 (route) => false,
               );
@@ -34,14 +36,21 @@ class ProfilePage extends StatelessWidget {
           },
           buildWhen: (previous, current) => current is AuthLoggingOut,
           builder: (context, state) {
-            if (state is AuthLoggingOut) {
-              return MainButton(
-                isLoading: true,
-              );
-            }
-            return MainButton(
-              text: 'Logout',
-              onTap: () async => await cubit.logout(),
+            return Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const DarkModeToggleRow(),
+                const SizedBox(height: 24.0),
+                if (state is AuthLoggingOut)
+                  MainButton(
+                    isLoading: true,
+                  )
+                else
+                  MainButton(
+                    text: 'Logout',
+                    onTap: () async => await cubit.logout(),
+                  ),
+              ],
             );
           },
         ),

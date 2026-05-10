@@ -1,10 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_ecommerce_app/models/location_item_model.dart';
 import 'package:flutter_ecommerce_app/models/payment_card_model.dart';
-import 'package:flutter_ecommerce_app/utils/app_colors.dart';
 import 'package:flutter_ecommerce_app/utils/app_routes.dart';
 import 'package:flutter_ecommerce_app/view_models/add_new_card_cubit/payment_methods_cubit.dart';
 import 'package:flutter_ecommerce_app/view_models/checkout_cubit/checkout_cubit.dart';
@@ -20,7 +18,6 @@ class CheckoutPage extends StatelessWidget {
   Widget _buildPaymentMethodItem(
       PaymentCardModel? chosenCard, BuildContext context) {
     final checkoutCubit = BlocProvider.of<CheckoutCubit>(context);
-    final paymentCubit = BlocProvider.of<PaymentMethodsCubit>(context);
     if (chosenCard != null) {
       return PaymentMethodItem(
         paymentCard: chosenCard,
@@ -80,7 +77,7 @@ class CheckoutPage extends StatelessWidget {
               Text(
                 '${chosenAddress.city}, ${chosenAddress.country}',
                 style: Theme.of(context).textTheme.labelLarge!.copyWith(
-                      color: AppColors.grey,
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
                     ),
               ),
             ],
@@ -170,7 +167,9 @@ class CheckoutPage extends StatelessWidget {
                           itemCount: cartItems.length,
                           separatorBuilder: (context, index) {
                             return Divider(
-                              color: AppColors.grey2,
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .surfaceContainerHighest,
                             );
                           },
                           itemBuilder: (context, index) {
@@ -179,7 +178,9 @@ class CheckoutPage extends StatelessWidget {
                               children: [
                                 DecoratedBox(
                                   decoration: BoxDecoration(
-                                    color: AppColors.grey2,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .surfaceContainerHighest,
                                     borderRadius: BorderRadius.circular(16),
                                   ),
                                   child: CachedNetworkImage(
@@ -212,11 +213,14 @@ class CheckoutPage extends StatelessWidget {
                                                   .textTheme
                                                   .titleMedium!
                                                   .copyWith(
-                                                    color: AppColors.grey,
+                                                    color: Theme.of(context)
+                                                        .colorScheme
+                                                        .onSurfaceVariant,
                                                   ),
                                               children: [
                                                 TextSpan(
-                                                  text: cartItem.size.name,
+                                                  text: cartItem.size.name
+                                                      .toUpperCase(),
                                                   style: Theme.of(context)
                                                       .textTheme
                                                       .titleMedium,
@@ -242,7 +246,9 @@ class CheckoutPage extends StatelessWidget {
                                               .textTheme
                                               .titleMedium!
                                               .copyWith(
-                                                color: AppColors.grey,
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .onSurfaceVariant,
                                               ),
                                           children: [
                                             TextSpan(
@@ -268,7 +274,9 @@ class CheckoutPage extends StatelessWidget {
                         _buildPaymentMethodItem(chosenPaymentCard, context),
                         const SizedBox(height: 16.0),
                         Divider(
-                          color: AppColors.grey2,
+                          color: Theme.of(context)
+                              .colorScheme
+                              .surfaceContainerHighest,
                         ),
                         const SizedBox(height: 16.0),
                         LabelWithValueRow(
@@ -292,8 +300,10 @@ class CheckoutPage extends StatelessWidget {
                           child: ElevatedButton(
                             onPressed: () {},
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: Theme.of(context).primaryColor,
-                              foregroundColor: AppColors.white,
+                              backgroundColor:
+                                  Theme.of(context).colorScheme.primary,
+                              foregroundColor:
+                                  Theme.of(context).colorScheme.onPrimary,
                             ),
                             child: const Text('Proceed to Buy'),
                           ),

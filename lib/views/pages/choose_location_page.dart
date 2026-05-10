@@ -1,6 +1,4 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_ecommerce_app/utils/app_colors.dart';
 import 'package:flutter_ecommerce_app/view_models/choose_location_cubit/choose_location_cubit.dart';
@@ -45,7 +43,7 @@ class _ChooseLocationPageState extends State<ChooseLocationPage> {
                 Text(
                   'Let\'s find an unforgettable event. Choose a location below to get started:',
                   style: Theme.of(context).textTheme.labelLarge!.copyWith(
-                        color: AppColors.grey,
+                        color: Theme.of(context).colorScheme.onSurfaceVariant,
                       ),
                 ),
                 const SizedBox(height: 36),
@@ -72,9 +70,11 @@ class _ChooseLocationPageState extends State<ChooseLocationPage> {
                       },
                       builder: (context, state) {
                         if (state is AddingLocation) {
-                          return const Center(
+                          return Center(
                             child: CircularProgressIndicator.adaptive(
-                              backgroundColor: AppColors.grey,
+                              backgroundColor: Theme.of(context)
+                                  .colorScheme
+                                  .onSurfaceVariant,
                             ),
                           );
                         }
@@ -94,10 +94,13 @@ class _ChooseLocationPageState extends State<ChooseLocationPage> {
                         );
                       },
                     ),
-                    suffixIconColor: AppColors.grey,
-                    prefixIconColor: AppColors.grey,
+                    suffixIconColor:
+                        Theme.of(context).colorScheme.onSurfaceVariant,
+                    prefixIconColor:
+                        Theme.of(context).colorScheme.onSurfaceVariant,
                     hintText: 'Write location: city-country',
-                    fillColor: AppColors.grey1,
+                    fillColor:
+                        Theme.of(context).colorScheme.surfaceContainerLow,
                     filled: true,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(16),
@@ -154,10 +157,12 @@ class _ChooseLocationPageState extends State<ChooseLocationPage> {
                                       cubit.selectLocation(location.id);
                                     },
                                     location: location,
-                                    borderColor:
-                                        chosenLocation.id == location.id
-                                            ? AppColors.primary
-                                            : AppColors.grey,
+                                    borderColor: chosenLocation.id ==
+                                            location.id
+                                        ? Theme.of(context).colorScheme.primary
+                                        : Theme.of(context)
+                                            .colorScheme
+                                            .surfaceContainerHigh,
                                   );
                                 }
                                 return LocationItemWidget(

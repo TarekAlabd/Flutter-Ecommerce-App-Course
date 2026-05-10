@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_ecommerce_app/models/add_to_cart_model.dart';
-import 'package:flutter_ecommerce_app/utils/app_colors.dart';
 
 class CounterWidget extends StatelessWidget {
   final int value;
@@ -36,13 +35,11 @@ class CounterWidget extends StatelessWidget {
     }
   }
 
-  
-
   @override
   Widget build(BuildContext context) {
     return DecoratedBox(
       decoration: BoxDecoration(
-        color: AppColors.grey2,
+        color: Theme.of(context).colorScheme.surfaceContainerHighest,
         borderRadius: const BorderRadius.all(
           Radius.circular(30),
         ),
@@ -52,12 +49,16 @@ class CounterWidget extends StatelessWidget {
         child: Row(
           children: [
             IconButton(
-              onPressed: () => cartItem != null ? decrementCounter(cartItem) : decrementCounter(productId),
+              onPressed: () => cartItem != null
+                  ? decrementCounter(cartItem)
+                  : decrementCounter(productId),
               icon: const Icon(Icons.remove),
             ),
             Text(value.toString()),
             IconButton(
-              onPressed: () => cartItem != null ? incrementCounter(cartItem) : incrementCounter(productId),
+              onPressed: () => cartItem != null
+                  ? incrementCounter(cartItem)
+                  : incrementCounter(productId),
               icon: const Icon(Icons.add),
             ),
           ],

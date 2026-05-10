@@ -25,7 +25,10 @@ final class QuantityCounterLoaded extends CartState {
   final int value;
   final String productId;
 
-  const QuantityCounterLoaded({required this.value, required this.productId,});
+  const QuantityCounterLoaded({
+    required this.value,
+    required this.productId,
+  });
 }
 
 final class QuantityCounterError extends CartState {

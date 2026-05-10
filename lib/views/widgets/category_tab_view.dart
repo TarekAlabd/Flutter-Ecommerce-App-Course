@@ -9,6 +9,7 @@ class CategoryTabView extends StatelessWidget {
     return ListView.builder(
       itemBuilder: (context, index) {
         final category = dummyCategories[index];
+        final colors = _categoryColors(context, index);
         return Padding(
           padding: const EdgeInsets.symmetric(vertical: 8.0),
           child: InkWell(
@@ -16,7 +17,7 @@ class CategoryTabView extends StatelessWidget {
             child: DecoratedBox(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(16.0),
-                color: category.bgColor,
+                color: colors.$1,
               ),
               child: Padding(
                 padding: const EdgeInsets.symmetric(
@@ -28,14 +29,14 @@ class CategoryTabView extends StatelessWidget {
                     Text(
                       category.name,
                       style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                            color: category.textColor,
+                            color: colors.$2,
                             fontWeight: FontWeight.w600,
                           ),
                     ),
                     Text(
                       '${category.productsCount} Products',
                       style: Theme.of(context).textTheme.labelLarge!.copyWith(
-                            color: category.textColor,
+                            color: colors.$2,
                             fontWeight: FontWeight.w600,
                           ),
                     ),
@@ -48,5 +49,18 @@ class CategoryTabView extends StatelessWidget {
       },
       itemCount: dummyCategories.length,
     );
+  }
+
+  (Color, Color) _categoryColors(BuildContext context, int index) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final styles = <(Color, Color)>[
+      (colorScheme.surfaceContainerHigh, colorScheme.onSurface),
+      (Colors.green, Colors.white),
+      (colorScheme.inverseSurface, colorScheme.onInverseSurface),
+      (colorScheme.surfaceContainerHigh, colorScheme.onSurface),
+      (Colors.blue, Colors.white),
+    ];
+
+    return styles[index % styles.length];
   }
 }

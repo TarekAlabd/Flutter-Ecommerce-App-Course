@@ -1,15 +1,14 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ecommerce_app/models/location_item_model.dart';
-import 'package:flutter_ecommerce_app/utils/app_colors.dart';
 
 class LocationItemWidget extends StatelessWidget {
-  final Color borderColor;
+  final Color? borderColor;
   final VoidCallback onTap;
   final LocationItemModel location;
   const LocationItemWidget({
     super.key,
-    this.borderColor = AppColors.grey,
+    this.borderColor,
     required this.onTap,
     required this.location,
   });
@@ -21,7 +20,8 @@ class LocationItemWidget extends StatelessWidget {
       child: DecoratedBox(
         decoration: BoxDecoration(
           border: Border.all(
-            color: borderColor,
+            color: borderColor ??
+                Theme.of(context).colorScheme.surfaceContainerHigh,
           ),
           borderRadius: BorderRadius.circular(16),
         ),
@@ -40,7 +40,7 @@ class LocationItemWidget extends StatelessWidget {
                   Text(
                     '${location.city}, ${location.country}',
                     style: Theme.of(context).textTheme.titleSmall!.copyWith(
-                          color: AppColors.grey,
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
                         ),
                   ),
                 ],
@@ -50,7 +50,8 @@ class LocationItemWidget extends StatelessWidget {
                 children: [
                   CircleAvatar(
                     radius: 55,
-                    backgroundColor: borderColor,
+                    backgroundColor: borderColor ??
+                        Theme.of(context).colorScheme.surfaceContainerHigh,
                   ),
                   CircleAvatar(
                     radius: 50,

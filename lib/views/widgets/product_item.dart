@@ -2,7 +2,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_ecommerce_app/models/product_item_model.dart';
-import 'package:flutter_ecommerce_app/utils/app_colors.dart';
 import 'package:flutter_ecommerce_app/view_models/home_cubit/home_cubit.dart';
 
 class ProductItem extends StatelessWidget {
@@ -22,7 +21,7 @@ class ProductItem extends StatelessWidget {
               width: 200,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(16.0),
-                color: AppColors.grey2,
+                color: Theme.of(context).colorScheme.surfaceContainerHighest,
               ),
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -43,9 +42,12 @@ class ProductItem extends StatelessWidget {
               top: 8.0,
               right: 8.0,
               child: DecoratedBox(
-                decoration: const BoxDecoration(
+                decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: Colors.white54,
+                  color: Theme.of(context)
+                      .colorScheme
+                      .surface
+                      .withValues(alpha: 0.75),
                 ),
                 child: Padding(
                   padding: const EdgeInsets.all(4.0),
@@ -108,7 +110,7 @@ class ProductItem extends StatelessWidget {
         Text(
           productItem.category,
           style: Theme.of(context).textTheme.labelMedium!.copyWith(
-                color: Colors.grey,
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
               ),
         ),
         Text(

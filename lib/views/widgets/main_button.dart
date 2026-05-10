@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_ecommerce_app/utils/app_colors.dart';
 
 class MainButton extends StatelessWidget {
   final double height;
   final VoidCallback? onTap;
-  final Color backgroundColor;
-  final Color foregroundColor;
+  final Color? backgroundColor;
+  final Color? foregroundColor;
   final String? text;
   final bool isLoading;
 
@@ -13,8 +12,8 @@ class MainButton extends StatelessWidget {
     super.key,
     this.height = 60,
     this.onTap,
-    this.backgroundColor = AppColors.primary,
-    this.foregroundColor = AppColors.white,
+    this.backgroundColor,
+    this.foregroundColor,
     this.text,
     this.isLoading = false,
   }) {
@@ -29,8 +28,10 @@ class MainButton extends StatelessWidget {
       child: ElevatedButton(
         onPressed: onTap,
         style: ElevatedButton.styleFrom(
-          backgroundColor: backgroundColor,
-          foregroundColor: foregroundColor,
+          backgroundColor:
+              backgroundColor ?? Theme.of(context).colorScheme.primary,
+          foregroundColor:
+              foregroundColor ?? Theme.of(context).colorScheme.onPrimary,
         ),
         child: isLoading
             ? const Center(

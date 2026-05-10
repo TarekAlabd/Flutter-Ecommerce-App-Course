@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_ecommerce_app/utils/app_colors.dart';
 import 'package:flutter_ecommerce_app/utils/app_routes.dart';
 import 'package:flutter_ecommerce_app/view_models/auth_cubit/auth_cubit.dart';
 import 'package:flutter_ecommerce_app/views/widgets/label_with_textfield.dart';
@@ -44,7 +43,7 @@ class _LoginPageState extends State<LoginPage> {
                   Text(
                     'Please, login with registered account!',
                     style: Theme.of(context).textTheme.labelLarge!.copyWith(
-                          color: AppColors.grey,
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
                         ),
                   ),
                   const SizedBox(height: 24),
@@ -131,7 +130,9 @@ class _LoginPageState extends State<LoginPage> {
                           'Or using other method',
                           style:
                               Theme.of(context).textTheme.labelLarge!.copyWith(
-                                    color: AppColors.grey,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onSurfaceVariant,
                                   ),
                         ),
                         const SizedBox(height: 16),
@@ -174,10 +175,13 @@ class _LoginPageState extends State<LoginPage> {
                         const SizedBox(height: 16),
                         BlocConsumer<AuthCubit, AuthState>(
                           bloc: cubit,
-                          listenWhen: (previous, current) => current is FacebookAuthDone || current is FacebookAuthError,
+                          listenWhen: (previous, current) =>
+                              current is FacebookAuthDone ||
+                              current is FacebookAuthError,
                           listener: (context, state) {
                             if (state is FacebookAuthDone) {
-                              Navigator.of(context).pushNamed(AppRoutes.homeRoute);
+                              Navigator.of(context)
+                                  .pushNamed(AppRoutes.homeRoute);
                             } else if (state is FacebookAuthError) {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
@@ -196,7 +200,8 @@ class _LoginPageState extends State<LoginPage> {
                               text: 'Login with Facebook',
                               imgUrl:
                                   'https://www.freepnglogos.com/uploads/facebook-logo-icon/facebook-logo-icon-facebook-logo-png-transparent-svg-vector-bie-supply-15.png',
-                              onTap: () async => await cubit.authenticateWithFacebook(),
+                              onTap: () async =>
+                                  await cubit.authenticateWithFacebook(),
                             );
                           },
                         ),

@@ -4,14 +4,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_ecommerce_app/utils/app_router.dart';
 import 'package:flutter_ecommerce_app/utils/app_routes.dart';
+import 'package:flutter_ecommerce_app/services/theme_services.dart';
 import 'package:flutter_ecommerce_app/view_models/auth_cubit/auth_cubit.dart';
 import 'package:flutter_ecommerce_app/view_models/favorite_cubit/favorite_cubit.dart';
+import 'package:flutter_ecommerce_app/view_models/theme_cubit/theme_cubit.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 final navigatorKey = GlobalKey<NavigatorState>();
 
 Future<void> main() async {
   await initializeApp();
-  runApp(const MyApp());
+  final prefs = await SharedPreferences.getInstance();
+  final initialIsDark = prefs.getBool('dark_mode_enabled') ?? false;
+  runApp(MyApp(prefs: prefs, initialIsDark: initialIsDark));
 }
 
 Future<void> initializeApp() async {
@@ -25,7 +30,6 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 }
 
 Future<void> handleNotification() async {
-
   // Handling background messages
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
@@ -47,20 +51,23 @@ Future<void> handleNotification() async {
       debugPrint('Message also contained a notification: Title: $title');
       debugPrint('Message also contained a notification: Body: $body');
 
-      showDialog(context: navigatorKey.currentContext!, builder: (_) {
-        return AlertDialog(
-          title: Text(title),
-          content: Text(body),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.of(navigatorKey.currentContext!).pop();
-              },
-              child: const Text('OK'),
-            ),
-          ],
-        );
-      },);
+      showDialog(
+        context: navigatorKey.currentContext!,
+        builder: (_) {
+          return AlertDialog(
+            title: Text(title),
+            content: Text(body),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.of(navigatorKey.currentContext!).pop();
+                },
+                child: const Text('OK'),
+              ),
+            ],
+          );
+        },
+      );
     }
   });
 
@@ -78,13 +85,22 @@ Future<void> handleNotification() async {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({super.key, required this.prefs, required this.initialIsDark});
+
+  final SharedPreferences prefs;
+  final bool initialIsDark;
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
+        BlocProvider<ThemeCubit>(
+          create: (context) => ThemeCubit(
+            themeServices: ThemeServicesImpl(prefs),
+            initialIsDark: initialIsDark,
+          ),
+        ),
         BlocProvider<AuthCubit>(
           create: (context) {
             final cubit = AuthCubit();
@@ -100,30 +116,42 @@ class MyApp extends StatelessWidget {
           },
         ),
       ],
-      child: Builder(builder: (context) {
-        final authCubit = BlocProvider.of<AuthCubit>(context);
+      child: BlocBuilder<ThemeCubit, ThemeState>(
+        builder: (context, themeState) {
+          final themeMode = themeState is ThemeLoaded
+              ? themeState.themeMode
+              : ThemeMode.light;
 
-        return BlocBuilder<AuthCubit, AuthState>(
-          bloc: authCubit,
-          buildWhen: (previous, current) =>
-              current is AuthDone || current is AuthInitial,
-          builder: (context, state) {
-            return MaterialApp(
-              debugShowCheckedModeBanner: false,
-              title: 'E-commerce App',
-              navigatorKey: navigatorKey,
-              theme: ThemeData(
-                colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-                useMaterial3: true,
-              ),
-              initialRoute: state is AuthDone
-                  ? AppRoutes.homeRoute
-                  : AppRoutes.loginRoute,
-              onGenerateRoute: AppRouter.onGenerateRoute,
-            );
-          },
-        );
-      }),
+          return BlocBuilder<AuthCubit, AuthState>(
+            buildWhen: (previous, current) =>
+                current is AuthDone || current is AuthInitial,
+            builder: (context, state) {
+              return MaterialApp(
+                debugShowCheckedModeBanner: false,
+                title: 'E-commerce App',
+                navigatorKey: navigatorKey,
+                theme: ThemeData(
+                  colorScheme:
+                      ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+                  useMaterial3: true,
+                ),
+                darkTheme: ThemeData(
+                  colorScheme: ColorScheme.fromSeed(
+                    seedColor: Colors.deepPurple,
+                    brightness: Brightness.dark,
+                  ),
+                  useMaterial3: true,
+                ),
+                themeMode: themeMode,
+                initialRoute: state is AuthDone
+                    ? AppRoutes.homeRoute
+                    : AppRoutes.loginRoute,
+                onGenerateRoute: AppRouter.onGenerateRoute,
+              );
+            },
+          );
+        },
+      ),
     );
   }
 }

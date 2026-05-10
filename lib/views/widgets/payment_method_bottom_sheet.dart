@@ -1,7 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_ecommerce_app/utils/app_colors.dart';
 import 'package:flutter_ecommerce_app/utils/app_routes.dart';
 import 'package:flutter_ecommerce_app/view_models/add_new_card_cubit/payment_methods_cubit.dart';
 import 'package:flutter_ecommerce_app/views/widgets/main_button.dart';
@@ -11,7 +10,6 @@ class PaymentMethodBottomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
     final paymentMethodsCubit = BlocProvider.of<PaymentMethodsCubit>(context);
 
     return SingleChildScrollView(
@@ -56,7 +54,9 @@ class PaymentMethodBottomSheet extends StatelessWidget {
                             leading: DecoratedBox(
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(8),
-                                color: AppColors.grey2,
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .surfaceContainerHighest,
                               ),
                               child: Padding(
                                 padding: const EdgeInsets.symmetric(
@@ -83,7 +83,9 @@ class PaymentMethodBottomSheet extends StatelessWidget {
                                       state.chosenPayment;
                                   return Radio<String>(
                                     value: paymentCard.id,
+                                    // ignore: deprecated_member_use
                                     groupValue: chosenPaymentMethod.id,
+                                    // ignore: deprecated_member_use
                                     onChanged: (id) {
                                       paymentMethodsCubit
                                           .changePaymentMethod(id!);
@@ -124,7 +126,9 @@ class PaymentMethodBottomSheet extends StatelessWidget {
                     leading: DecoratedBox(
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
-                          color: AppColors.grey2,
+                          color: Theme.of(context)
+                              .colorScheme
+                              .surfaceContainerHighest,
                         ),
                         child: const Padding(
                           padding: EdgeInsets.all(4.0),

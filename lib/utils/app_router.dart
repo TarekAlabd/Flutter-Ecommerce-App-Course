@@ -58,7 +58,7 @@ class AppRouter {
           settings: settings,
         );
       case AppRoutes.addNewCardRoute:
-      final paymentCubit = settings.arguments as PaymentMethodsCubit;
+        final paymentCubit = settings.arguments as PaymentMethodsCubit;
         return MaterialPageRoute(
           builder: (_) => BlocProvider.value(
             value: paymentCubit,

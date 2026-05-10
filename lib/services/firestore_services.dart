@@ -18,7 +18,7 @@ class FirestoreServices {
     await reference.set(data);
   }
 
-  Future<void> deleteData({required String path}) async { 
+  Future<void> deleteData({required String path}) async {
     final reference = firestore.doc(path);
     debugPrint('delete: $path');
     await reference.delete();
@@ -37,7 +37,8 @@ class FirestoreServices {
     final snapshots = query.snapshots();
     return snapshots.map((snapshot) {
       final result = snapshot.docs
-          .map((snapshot) => builder(snapshot.data() as Map<String, dynamic>, snapshot.id))
+          .map((snapshot) =>
+              builder(snapshot.data() as Map<String, dynamic>, snapshot.id))
           .where((value) => value != null)
           .toList();
       if (sort != null) {
@@ -53,7 +54,8 @@ class FirestoreServices {
   }) {
     final reference = firestore.doc(path);
     final snapshots = reference.snapshots();
-    return snapshots.map((snapshot) => builder(snapshot.data() as Map<String, dynamic>, snapshot.id));
+    return snapshots.map((snapshot) =>
+        builder(snapshot.data() as Map<String, dynamic>, snapshot.id));
   }
 
   // One Time Request for the document
@@ -79,7 +81,8 @@ class FirestoreServices {
     }
     final snapshots = await query.get();
     final result = snapshots.docs
-        .map((snapshot) => builder(snapshot.data() as Map<String, dynamic>, snapshot.id))
+        .map((snapshot) =>
+            builder(snapshot.data() as Map<String, dynamic>, snapshot.id))
         .where((value) => value != null)
         .toList();
     if (sort != null) {

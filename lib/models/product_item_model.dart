@@ -1,21 +1,21 @@
 enum ProductSize {
-  S,
-  M,
-  L,
-  XL;
+  s,
+  m,
+  l,
+  xl;
 
   static ProductSize fromString(String size) {
     switch (size.toUpperCase()) {
       case 'S':
-        return ProductSize.S;
+        return ProductSize.s;
       case 'M':
-        return ProductSize.M;
+        return ProductSize.m;
       case 'L':
-        return ProductSize.L;
+        return ProductSize.l;
       case 'XL':
-        return ProductSize.XL;
+        return ProductSize.xl;
       default:
-        return ProductSize.S;
+        return ProductSize.s;
     }
   }
 }
@@ -81,8 +81,7 @@ class ProductItemModel {
     return result;
   }
 
-  factory ProductItemModel.fromMap(
-      Map<String, dynamic> map) {
+  factory ProductItemModel.fromMap(Map<String, dynamic> map) {
     return ProductItemModel(
       id: map['id'] ?? '',
       name: map['name'] ?? '',

@@ -2,7 +2,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_ecommerce_app/models/add_to_cart_model.dart';
-import 'package:flutter_ecommerce_app/utils/app_colors.dart';
 import 'package:flutter_ecommerce_app/view_models/cart_cubit/cart_cubit.dart';
 import 'package:flutter_ecommerce_app/views/widgets/counter_widget.dart';
 
@@ -19,7 +18,7 @@ class CartItemWidget extends StatelessWidget {
         children: [
           DecoratedBox(
             decoration: BoxDecoration(
-              color: AppColors.grey2,
+              color: Theme.of(context).colorScheme.surfaceContainerHighest,
               borderRadius: BorderRadius.circular(16),
             ),
             child: CachedNetworkImage(
@@ -42,11 +41,11 @@ class CartItemWidget extends StatelessWidget {
                   TextSpan(
                     text: 'Size: ',
                     style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                          color: AppColors.grey,
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
                         ),
                     children: [
                       TextSpan(
-                        text: cartItem.size.name,
+                        text: cartItem.size.name.toUpperCase(),
                         style: Theme.of(context).textTheme.titleMedium,
                       ),
                     ],

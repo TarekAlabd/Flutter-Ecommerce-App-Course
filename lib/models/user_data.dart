@@ -13,12 +13,12 @@ class UserData {
 
   Map<String, dynamic> toMap() {
     final result = <String, dynamic>{};
-  
+
     result.addAll({'id': id});
     result.addAll({'username': username});
     result.addAll({'email': email});
     result.addAll({'createdAt': createdAt});
-  
+
     return result;
   }
 

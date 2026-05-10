@@ -45,7 +45,7 @@ class ProductDetailsCubit extends Cubit<ProductDetailsState> {
       final selectedProduct =
           await productDetailsServices.fetchProductDetails(productId);
       final currentUser = authServices.currentUser();
-      
+
       final cartItem = AddToCartModel(
         id: DateTime.now().toIso8601String(),
         product: selectedProduct,

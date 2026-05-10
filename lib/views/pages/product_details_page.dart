@@ -18,7 +18,9 @@ class ProductDetailsPage extends StatelessWidget {
     return BlocBuilder<ProductDetailsCubit, ProductDetailsState>(
       bloc: cubit,
       buildWhen: (previous, current) =>
-          current is ProductDetailsLoading || current is ProductDetailsLoaded || current is ProductDetailsError,
+          current is ProductDetailsLoading ||
+          current is ProductDetailsLoaded ||
+          current is ProductDetailsError,
       builder: (context, state) {
         if (state is ProductDetailsLoading) {
           return const Scaffold(
@@ -53,7 +55,8 @@ class ProductDetailsPage extends StatelessWidget {
                   height: size.height * 0.52,
                   width: double.infinity,
                   decoration: BoxDecoration(
-                    color: AppColors.grey2,
+                    color:
+                        Theme.of(context).colorScheme.surfaceContainerHighest,
                   ),
                   child: Column(
                     children: [
@@ -69,9 +72,9 @@ class ProductDetailsPage extends StatelessWidget {
                   padding: EdgeInsets.only(top: size.height * 0.47),
                   child: Container(
                     width: double.infinity,
-                    decoration: const BoxDecoration(
-                      color: AppColors.white,
-                      borderRadius: BorderRadius.only(
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.surface,
+                      borderRadius: const BorderRadius.only(
                         topLeft: Radius.circular(50),
                         topRight: Radius.circular(50),
                       ),
@@ -172,8 +175,9 @@ class ProductDetailsPage extends StatelessWidget {
                                         child: InkWell(
                                           onTap: () {
                                             BlocProvider.of<
-                                                  ProductDetailsCubit>(context)
-                                              .selectSize(size);
+                                                        ProductDetailsCubit>(
+                                                    context)
+                                                .selectSize(size);
                                           },
                                           child: DecoratedBox(
                                             decoration: BoxDecoration(
@@ -181,14 +185,17 @@ class ProductDetailsPage extends StatelessWidget {
                                               color: state is SizeSelected &&
                                                       state.size == size
                                                   ? Theme.of(context)
-                                                      .primaryColor
-                                                  : AppColors.grey2,
+                                                      .colorScheme
+                                                      .primary
+                                                  : Theme.of(context)
+                                                      .colorScheme
+                                                      .surfaceContainerHighest,
                                             ),
                                             child: Padding(
                                               padding:
                                                   const EdgeInsets.all(12.0),
                                               child: Text(
-                                                size.name,
+                                                size.name.toUpperCase(),
                                                 style: Theme.of(context)
                                                     .textTheme
                                                     .labelMedium!
@@ -197,8 +204,14 @@ class ProductDetailsPage extends StatelessWidget {
                                                           state is SizeSelected &&
                                                                   state.size ==
                                                                       size
-                                                              ? AppColors.white
-                                                              : AppColors.black,
+                                                              ? Theme.of(
+                                                                      context)
+                                                                  .colorScheme
+                                                                  .onPrimary
+                                                              : Theme.of(
+                                                                      context)
+                                                                  .colorScheme
+                                                                  .onSurface,
                                                     ),
                                               ),
                                             ),
@@ -227,7 +240,10 @@ class ProductDetailsPage extends StatelessWidget {
                                 .textTheme
                                 .labelMedium!
                                 .copyWith(
-                                  color: AppColors.black45,
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .onSurface
+                                      .withValues(alpha: 0.45),
                                 ),
                           ),
                           const Spacer(),
@@ -242,7 +258,9 @@ class ProductDetailsPage extends StatelessWidget {
                                       .titleLarge!
                                       .copyWith(
                                         fontWeight: FontWeight.bold,
-                                        color: Theme.of(context).primaryColor,
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .primary,
                                       ),
                                   children: [
                                     TextSpan(
@@ -257,34 +275,45 @@ class ProductDetailsPage extends StatelessWidget {
                                   ],
                                 ),
                               ),
-                              BlocBuilder<ProductDetailsCubit, ProductDetailsState>(
+                              BlocBuilder<ProductDetailsCubit,
+                                  ProductDetailsState>(
                                 bloc: cubit,
-                                    buildWhen: (previous, current) => current is ProductAddedToCart || current is ProductAddingToCart,
+                                buildWhen: (previous, current) =>
+                                    current is ProductAddedToCart ||
+                                    current is ProductAddingToCart,
                                 builder: (context, state) {
                                   if (state is ProductAddingToCart) {
                                     return ElevatedButton(
-                                    onPressed: null,
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: AppColors.primary,
-                                      foregroundColor: AppColors.white,
-                                    ),
-                                    child: const CircularProgressIndicator.adaptive(),
-                                  );
+                                      onPressed: null,
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: Theme.of(context)
+                                            .colorScheme
+                                            .primary,
+                                        foregroundColor: Theme.of(context)
+                                            .colorScheme
+                                            .onPrimary,
+                                      ),
+                                      child: const CircularProgressIndicator
+                                          .adaptive(),
+                                    );
                                   } else if (state is ProductAddedToCart) {
                                     return ElevatedButton(
-                                    onPressed: null,
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: AppColors.primary,
-                                      foregroundColor: AppColors.white,
-                                    ),
-                                    child: const Text('Added To Cart'),
-                                  );
+                                      onPressed: null,
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: Theme.of(context)
+                                            .colorScheme
+                                            .primary,
+                                        foregroundColor: Theme.of(context)
+                                            .colorScheme
+                                            .onPrimary,
+                                      ),
+                                      child: const Text('Added To Cart'),
+                                    );
                                   }
                                   return ElevatedButton.icon(
                                     onPressed: () {
                                       if (cubit.selectedSize != null) {
-                                        cubit
-                                            .addToCart(product.id);
+                                        cubit.addToCart(product.id);
                                       } else {
                                         ScaffoldMessenger.of(context)
                                             .showSnackBar(
@@ -297,8 +326,11 @@ class ProductDetailsPage extends StatelessWidget {
                                       }
                                     },
                                     style: ElevatedButton.styleFrom(
-                                      backgroundColor: AppColors.primary,
-                                      foregroundColor: AppColors.white,
+                                      backgroundColor:
+                                          Theme.of(context).colorScheme.primary,
+                                      foregroundColor: Theme.of(context)
+                                          .colorScheme
+                                          .onPrimary,
                                     ),
                                     label: const Text('Add to Cart'),
                                     icon:
