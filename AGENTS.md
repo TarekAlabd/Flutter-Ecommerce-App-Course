@@ -42,3 +42,8 @@ PRs should include a short description, linked issue when applicable, screenshot
 ## Security & Configuration Tips
 
 Do not commit secrets, private API keys, or local Firebase credentials. Keep Firebase paths centralized in `ApiPaths`, and route Firestore access through `FirestoreServices.instance` instead of embedding collection names directly in UI code.
+
+<!-- SPECKIT START -->
+For additional context about technologies to be used, project structure,
+shell commands, and other important information, read the current plan
+<!-- SPECKIT END -->

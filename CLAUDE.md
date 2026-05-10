@@ -54,3 +54,8 @@ This is a Flutter e-commerce app using **MVVM + BLoC/Cubit**. Data flows: Firest
 ### Authentication
 
 Supports email/password, Google Sign-In, and Facebook Login — all via `AuthServicesImpl`. After registration, user data is persisted to `users/{uid}` in Firestore.
+
+<!-- SPECKIT START -->
+For additional context about technologies to be used, project structure,
+shell commands, and other important information, read the current plan
+<!-- SPECKIT END -->
