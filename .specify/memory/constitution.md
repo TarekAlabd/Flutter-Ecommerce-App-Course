@@ -139,7 +139,7 @@ Firebase usage MUST follow these rules to ensure security, performance, and main
 - [ ] `flutter analyze` exits with zero issues
 - [ ] `flutter test` passes with ≥ 80% coverage
 - [ ] Constitution Check in plan.md passes for all seven principles
-- [ ] No hardcoded strings (UI labels in `const` or localization); no hardcoded colors (use `AppColors`)
+- [ ] No hardcoded strings (UI labels in `const` or localization); no hardcoded colors (use `Theme.of(context).colorScheme.*` for theme-dependent colors, `AppColors` for theme-independent constants)
 - [ ] No direct Firestore access outside `FirestoreServices`
 - [ ] New models have `fromMap`, `toMap`, `copyWith`
 - [ ] New routes registered in `AppRoutes` and `AppRouter`

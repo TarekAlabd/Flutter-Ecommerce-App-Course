@@ -58,4 +58,5 @@ Supports email/password, Google Sign-In, and Facebook Login — all via `AuthSer
 <!-- SPECKIT START -->
 For additional context about technologies to be used, project structure,
 shell commands, and other important information, read the current plan
+at `specs/001-dark-mode-toggle/plan.md`.
 <!-- SPECKIT END -->
